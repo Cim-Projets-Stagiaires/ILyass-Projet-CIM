@@ -1,0 +1,307 @@
+<button id="create-user-btn" class="create-user-btn">
+    <i class="fas fa-user-plus"></i> Ajouter un Utilisateur
+  </button>
+
+<section class="styled-table-container">
+  <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Image de Profile</th>
+            <th>Nom et Prénom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Statut</th>
+            <th>Actions</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {{#each users}}
+        <tr>
+            <td><img src="{{this.profilePicture}}" alt="Profile Picture" class="user-profile-pic"></td>
+            <td>{{this.name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{this.accessName}}</td>
+            <td class="actions-data">
+              <button class="edit-user-btn" data-id="{{this.id}}" data-email="{{this.email}}" data-access="{{this.access}}"><i class="fas fa-edit"></i></button>
+              <button class="delete-user-btn" data-id="{{this.id}}"><i class="fas fa-trash-alt"></i></button>
+            </td>
+            
+        </tr>
+        {{/each}}
+    </tbody>
+  </table>
+
+</section>
+
+
+<script>
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.view-btn').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+      const submissionId = this.getAttribute('data-id');
+      const formName = this.getAttribute('data-form');
+
+      fetch(`/plat/view-form/form-infos/${formName}/${submissionId}`)
+        .then(response => response.json())
+        .then(data => {
+          const submission = data.submission;
+          const user = data.user;
+          const structure = data.structure;
+          const formDetails = data.formDetails;
+          const formNameMap = {
+            'form_AZS': 'Demande d\'analyse par Zeta-Sizer',
+            'form_AMCT': 'Demande d\'analyse par l\'appareil de mesure de conductivité thermique',
+            'form_AAM': 'Demande d\'analyse par activité antimicrobienne',
+            'form_RDMO': 'Demande d\'analyse par recherche et dénombrement des micro-organismes',
+            'form_CHNSO': 'Demande d\'analyse d\'éléments CHNS-O',
+            'form_SAA': 'Demande d\'analyse par la Spectrométrie d\'Absorption Atomique',
+            'form_UV': 'Demande d\'analyse par spectrophotomètre UV - Visible',
+            'form_TOC': 'Demande par Analyseur TOC',
+            'form_PIC': 'Demande d\'analyses isotropiques des eaux (PICARRO)',
+            'form_UHPLC': 'Demande par Analyseur UHPLC'
+          };
+
+          const getStatusClass = (status) => {
+            switch (status) {
+              case 'Demande déposée':
+                return 'status-deposee';
+              case 'Demande reçue':
+                return 'status-recue';
+              case 'Demande annulée':
+                return 'status-annulee';
+              case 'Demande approuvée':
+                return 'status-approuvee';
+              case 'Demande refusée':
+                return 'status-refusee';
+              case 'Echantillion demandé':
+                return 'status-demande';
+              case 'Echantillion déposé':
+                return 'status-depose';
+              case 'Résultat partiel':
+                return 'status-partiel';
+              case 'Résultat final':
+                return 'status-final';
+              case 'Clôturé':
+                return 'status-cloture';
+              default:
+                return '';
+            }
+          };
+
+          const progressBarHtml = `
+            <div class="progress-bar">
+              <div class="progress-bar-item ${['Demande déposée', 'Demande reçue', 'Demande approuvée', 'Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Demande déposée > </div>
+              <div class="progress-bar-item ${['Demande reçue', 'Demande approuvée', 'Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Demande reçue > </div>
+              <div class="progress-bar-item ${['Demande approuvée', 'Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Demande approuvée > </div>
+              <div class="progress-bar-item ${['Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Echantillion demandé > </div>
+              <div class="progress-bar-item ${['Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Echantillion déposé > </div>
+              <div class="progress-bar-item ${['Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Résultat partiel > </div>
+              <div class="progress-bar-item ${['Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Résultat final > </div>
+              <div class="progress-bar-item ${submission.status === 'Clôturé' ? 'active' : ''}">Clôturé</div>
+            </div>
+          `;
+
+          const popupHtml = `
+            <div class="popup-container">
+              <div class="infos-popup-header">
+                <h2>Info de la demande</h2>
+              </div>
+              <div class="popup-views">
+                <a href="/plat/view-form/${submission.form_name}/${submission.id}" class="btn">Voir la demande</a>
+                ${submission.partiel ? `<a href="/files/partiel/${submission.partiel}" target="_blank" class="btn">Résultat partiel</a>` : '<p>Résultat partiel indisponible</p>'}
+                ${submission.final ? `<a href="/files/final/${submission.final}" target="_blank" class="btn">Résultat final</a>` : '<p>Résultat final indisponible</p>'}
+              </div>
+              <div class="popup-content">
+                <div class="left-section">
+                  <h4>Demande</h4>
+                  <p><strong>Code de la fiche :</strong> ${formDetails.code}</p>
+                  <p><strong>Nom :</strong> ${formNameMap[submission.form_name]}</p>
+                  <p><strong>Date de création :</strong> ${submission.date_de_creation}</p>
+                  <p><strong>Créé par :</strong> ${user.name}</p>
+                  <p><strong>Statut du Demandeur :</strong> ${user.status}</p>
+                  ${user.status === 'Etudiant' ? `<p><strong>Niveau :</strong> ${user.niveau}</p>` : ''}
+                  <p><strong>Statut :</strong> <span class="status-data ${getStatusClass(submission.status)}">${submission.status}</span></p>
+                </div>
+                <div class="right-section">
+                  <h4>Etablissement</h4>
+                  <p><strong>Nom :</strong> ${structure.name}</p>
+                  <p><strong>Etablissement :</strong> ${structure.etablissement}</p>
+                </div>
+              </div>
+              ${['Demande annulée', 'Demande refusée'].includes(submission.status) ? '' : progressBarHtml}
+            </div>
+          `;
+
+          Swal.fire({
+            html: popupHtml,
+            showConfirmButton: false,
+            width: '80%',
+            customClass: {
+              popup: 'infos-popup'
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching submission details:', error);
+        });
+    });
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.edit-user-btn').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+      const userId = this.getAttribute('data-id');
+      const userAccess = this.getAttribute('data-access');
+
+      Swal.fire({
+        title: 'Gestion de l\'Utilisateur',
+        html: `
+          <div>
+            <label for="password">Mot de Passe :</label>
+            <input type="password" id="password">
+            <br>
+            <label for="access">Accès :</label>
+            <select id="access">
+              <option value="1">Utilisateur Client</option>
+              <option value="4">Encadrant</option>
+              <option value="5">Responsable de Structure</option>
+              <option value="10">Plateforme Analyse et Caractérisation des matériaux</option>
+              <option value="20">Plateforme Analyses Physico-Chimique et Caractérisation</option>
+              <option value="30">Plateforme Biotech</option>
+              <option value="100">Administrateur</option>
+            </select>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Modifier',
+        preConfirm: () => {
+          const password = document.getElementById('password').value;
+          const access = document.getElementById('access').value;
+
+          return fetch(`/plat/dashboard/adminUsers/update/${userId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password, access })
+          });
+        }
+      });
+
+      // Set the current access in the dropdown
+      document.getElementById('access').value = userAccess;
+    });
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.delete-user-btn').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+      const userId = this.getAttribute('data-id');
+      const deleteUrl = `/plat/dashboard/adminUsers/delete/${userId}`;
+      const deleteWarningHtml = `
+        <div class="alert-popup">
+          <div class="alert-popup-header">
+            <img src="/images/icon-warning-orange.png" alt="Warning" class="alert-popup-icon">
+            <span class="alert-popup-title">Etes-vous sûr de vouloir supprimer cet utilisateur?</span>
+          </div>
+          <div class="alert-popup-body">
+            <p>Cette opération est irréversible!</p>
+            <div class="alert-popup-actions">
+              <button id="confirmDelete" class="alert-popup-confirm-btn">Supprimer</button>
+              <button id="cancelDelete" class="alert-popup-cancel-btn">Annuler</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      Swal.fire({
+        html: deleteWarningHtml,
+        showConfirmButton: false,
+        showCancelButton: false,
+        focusConfirm: false,
+        customClass: {
+          popup: 'my-custom-popup'
+        },
+        didOpen: () => {
+          // Set up custom buttons within the modal
+          document.getElementById('confirmDelete').addEventListener('click', () => {
+            window.location.href = deleteUrl;
+          });
+          document.getElementById('cancelDelete').addEventListener('click', () => {
+            Swal.close();
+          });
+        }
+      });
+    });
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('create-user-btn').addEventListener('click', function() {
+    Swal.fire({
+      title: 'Ajouter Un Nouvel Utilisateur',
+      html: `
+        <div>
+          <label for="name">Nom et Prénom :</label>
+          <input type="text" id="name" required>
+          <br>
+          <label for="email">Email :</label>
+          <input type="email" id="email" required>
+          <br>
+          <label for="password">Mot de Passe :</label>
+          <input type="password" id="password" required>
+          <br>
+          <label for="access">Accès :</label>
+          <select id="access" required>
+            <option value="1">Utilisateur Client</option>
+            <option value="4">Encadrant</option>
+            <option value="5">Responsable de Structure</option>
+            <option value="10">Plateforme Analyse et Caractérisation des matériaux</option>
+            <option value="20">Plateforme Analyses Physico-Chimique</option>
+            <option value="30">Plateforme Biotech</option>
+            <option value="40">Plateforme Analyse et Caractérisation par Chromatographie</option>
+            <option value="100">Administrateur</option>
+          </select>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Ajouter',
+      preConfirm: () => {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const access = document.getElementById('access').value;
+
+        return fetch('/plat/dashboard/adminUsers/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password, access })
+        });
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Success', 'User created successfully', 'success').then(() => {
+          window.location.reload();
+        });
+      }
+    });
+  });
+});
+
+
+
+</script>

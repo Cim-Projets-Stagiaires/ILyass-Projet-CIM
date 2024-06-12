@@ -1,0 +1,88 @@
+{{>form_AMCT}}
+
+{{>form_AZS}}
+
+{{>form_AAM}}
+
+{{>form_RDMO}}
+
+{{>form_CHNSO}}
+
+{{>form_SAA}}
+
+{{>form_UV}}
+
+{{>form_TOC}}
+
+{{>form_PIC}}
+
+{{>form_UHPLC}}
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var formType = "{{formType}}";
+  
+  if (formType === 'form_AZS') {
+    var azsBody = document.querySelector('.AZS-body');
+    if (azsBody) {
+      azsBody.classList.add('display');
+    }
+  } else if (formType === 'form_AMCT') {
+    var amctBody = document.querySelector('.AMCT-body');
+    if (amctBody) {
+      amctBody.classList.add('display');
+    }
+  } else if (formType === 'form_AAM') {
+    var aamBody = document.querySelector('.AAM-body');
+    if (aamBody) {
+      aamBody.classList.add('display');
+    }
+  } else if (formType === 'form_RDMO') {
+    var rdmoBody = document.querySelector('.RDMO-body');
+    if (rdmoBody) {
+      rdmoBody.classList.add('display');
+    }
+  } else if (formType === 'form_CHNSO') {
+    var chnsoBody = document.querySelector('.CHNSO-body');
+    if (chnsoBody) {
+      chnsoBody.classList.add('display');
+    }
+  } else if (formType === 'form_SAA') {
+    var saaBody = document.querySelector('.SAA-body');
+    if (saaBody) {
+      saaBody.classList.add('display');
+    }
+  } else if (formType === 'form_UV') {
+    var uvBody = document.querySelector('.UV-body');
+    if (uvBody) {
+      uvBody.classList.add('display');
+    }
+  } else if (formType === 'form_TOC') {
+    var tocBody = document.querySelector('.TOC-body');
+    if (tocBody) {
+      tocBody.classList.add('display');
+    }
+  } else if (formType === 'form_PIC') {
+    var picBody = document.querySelector('.PIC-body');
+    if (picBody) {
+      picBody.classList.add('display');
+    }
+  } else if (formType === 'form_UHPLC') {
+    var uhplcBody = document.querySelector('.UHPLC-body');
+    if (uhplcBody) {
+      uhplcBody.classList.add('display');
+    }
+  }
+});
+
+
+
+
+
+
+</script>
+
+

@@ -1,0 +1,212 @@
+<div class="CHNSO-body" id="form-body">
+  <div class="form-wrapper">
+  <h2>Demande d'analyse d'éléments CHNS-O</h2>
+  <form id="demande-form" method="POST" action="/plat/formulaire/submit-CHNSO"onsubmit="return validateForm()">
+    
+
+  <div class="form-row">
+    <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+    <div class="form-line">
+
+      <div class="sample-form">
+        <div class="form-field radio-group">
+          <label>Type d'analyse :</label>
+          <span><input type="radio" name="type" value="Qualitative"> Qualitative</span>
+          <span><input type="radio" name="type" value="Quantitative"> Quantitative</span>
+        </div>
+      </div>
+
+      <div class="sample-form">
+        <div class="form-field">
+          <label for="nbr_ech">Nombre d'échantillons :</label>
+          <input type="number" id="nbr_ech" name="nbr_ech" required min="1" max="10">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-line">
+
+      <div class="sample-form">
+        <div class="form-field">
+          <label for="nbr_rep">Nombre de répétition si nécessaires :</label>
+          <input type="number" id="nbr_rep" name="nbr_rep">
+        </div>
+      </div>
+
+      <div class="sample-form">
+        <div class="form-field radio-group">
+          <label>Toxicité :</label>
+          <span><input type="radio" name="Toxicité" value="Toxiques"> Toxiques</span>
+          <span><input type="radio" name="Toxicité" value="Non Toxiques"> Non toxiques</span>
+          <span><input type="radio" name="Toxicité" value="Radioactifs"> Radioactifs</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sample-form">
+      <div class="form-field">
+        <label>Matrice des échantillons :</label>
+      </div>
+      <div class="form-field check-group">
+        <div class="checkbox-container">
+          <span><input type="radio" name="nature" value="Sols et Sédiments" required> Sols et sédiments</span>
+          <span><input type="radio" name="nature" value="Polymères" required> Polymères</span>
+          <span><input type="radio" name="nature" value="Plantes" required> Plantes</span>
+          <span><input type="radio" name="nature" value="Produits pharmaceutiques" required> Produits pharmaceutiques</span>
+          <span><input type="radio" name="nature" value="Produits cosmétiques" required> Produits cosmétiques</span>
+          <span><input type="radio" name="nature" value="Produits pétrochimiques" required> Produits pétrochimiques</span>
+          <span><input type="radio" name="nature" value="Colles vernis" required> Colles vernis</span>
+          <span><input type="radio" name="nature" value="autre" required> Autre à préciser</span>
+          <input type="text" name="details_nature" id="details_nature" style="display:none;" placeholder="Précisez">
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="sample-form">
+
+      <div class="form-section">
+        <label>Veuillez indiquer les références de vos échantillons</label>
+        <div class="tables-container">
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>N° échantillon</th>
+                        <th>Réf échantillon</th>
+                    </tr>
+                    <tr id="sample-row-1">
+                        <td>01</td>
+                        <td><input type="text" name="ref_ech_1"></td>
+                    </tr>
+                    <tr id="sample-row-2">
+                        <td>02</td>
+                        <td><input type="text" name="ref_ech_2"></td>
+                    </tr>
+                    <tr id="sample-row-3">
+                        <td>03</td>
+                        <td><input type="text" name="ref_ech_3"></td>
+                    </tr>
+                    <tr id="sample-row-4">
+                        <td>04</td>
+                        <td><input type="text" name="ref_ech_4"></td>
+                    </tr>
+                    <tr id="sample-row-5">
+                        <td>05</td>
+                        <td><input type="text" name="ref_ech_5"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>N° échantillon</th>
+                        <th>Réf échantillon</th>
+                    </tr>
+                    <tr id="sample-row-6">
+                        <td>06</td>
+                        <td><input type="text" name="ref_ech_6"></td>
+                    </tr>
+                    <tr id="sample-row-7">
+                        <td>07</td>
+                        <td><input type="text" name="ref_ech_7"></td>
+                    </tr>
+                    <tr id="sample-row-8">
+                        <td>08</td>
+                        <td><input type="text" name="ref_ech_8"></td>
+                    </tr>
+                    <tr id="sample-row-9">
+                        <td>09</td>
+                        <td><input type="text" name="ref_ech_9"></td>
+                    </tr>
+                    <tr id="sample-row-10">
+                        <td>10</td>
+                        <td><input type="text" name="ref_ech_10"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sample-form">
+      <label>Choisir la configuration d'analyse selon les éléments à doser :</label>
+      <div class="form-field radio-group">
+        <span><input type="radio" name="config" value="chns"> Configuration CHNS</span>
+        <span><input type="radio" name="config" value="o"> Configuration O (Oxygène)</span>
+      </div>
+      <label>NB: Une seule configuration est autorisée par demande.</label>
+    </div>
+
+
+    <div class="sample-form">
+      <div class="form-field">
+        <label for="elm">Préciser les éléments à doser</label>
+        <input type="text" id="elm" name="elm" required>
+      </div>
+    </div>
+
+
+
+    <div class="sample-form">
+
+      <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. </span>
+      <span class="NB">La quantité de l'échantillion nécessaire pour l'analyse est 50mg. </span>
+      <span class="NB">Les échantillions doivent etre bien broyés et séchés. </span>
+    </div>
+
+    <h4>CONDITIONS DE STOCKAGE DES ÉCHANTILLONS AVANT ANALYSE</h4>
+    <div class="sample-form">
+      <label>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</label>
+      <textarea id="conditions-stockage" name="conditions_stock"></textarea>
+      <div class="form-field radio-group">
+        <label>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</label>
+        <span><input type="radio" name="recuperation_echantillon" value="oui"> Oui</span>
+        <span><input type="radio" name="recuperation_echantillon" value="non"> Non</span>
+      </div>
+      <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+      après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+      échantillions seront détruits automatiquement.</span>
+
+    </div>
+
+
+
+
+    
+
+  </div>
+
+    <div class="form-footer">
+      <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+      <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+    </div>
+
+  </form>
+  </div>
+
+</div>
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const radioButtons = document.querySelectorAll('input[name="nature"]');
+  const detailsInput = document.getElementById('details_nature');
+
+  radioButtons.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'autre') {
+        detailsInput.style.display = 'block';
+      } else {
+        detailsInput.style.display = 'none';
+      }
+    });
+  });
+});
+
+</script>

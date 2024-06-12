@@ -1,0 +1,51 @@
+<div class="panelHeader">
+  <div class="panelLogo">
+    <img src="/images/Logo-CIM.png" alt="Logo">
+  </div>
+  <div class="user-profile">
+    <img src="{{profilePic}}" alt="Profile Picture" class="profile-pic" id="profilePic">
+    <div class="profileMenu" id="profileMenu">
+      <a href="/editProfile">Modifier Votre Profile</a>
+      {{#if showRespoStrucLink}}
+        <a href="/plat/respo_struc">Fiche De Demandes</a>
+      {{/if}}
+      {{#if showGestPlatLink}}
+        <a href="/plat/gest_plat">Gestion Des Plateformes</a>
+      {{/if}}
+      {{#if showDashboardLink}}
+        <a href="/plat/dashboard">Dashboard</a>
+      {{/if}}
+      
+      <a href="/logout">Se Déconnecter</a>
+      
+    </div>
+  </div>
+</div>
+
+<section id="page-banner" class="panel-header">
+  <h2>Panneau de Demande d'Analyses</h2>
+  <h1>Bienvenue {{name}}</h1>
+</section>
+
+<a href="/plat/plateforme" class="btn" id="nouvelle-demande-btn">Nouvelle demande</a>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const profilePic = document.getElementById('profilePic');
+  const profileMenu = document.getElementById('profileMenu');
+
+  profilePic.addEventListener('click', function() {
+    profileMenu.style.display = profileMenu.style.display === 'block' ? 'none' : 'block';
+  });
+
+  window.addEventListener('click', function(event) {
+    if (!event.target.matches('.profile-pic')) {
+      if (profileMenu.style.display === 'block') {
+        profileMenu.style.display = 'none';
+      }
+    }
+  });
+});
+
+</script>

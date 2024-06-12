@@ -1,0 +1,114 @@
+<div class="RDMO-body" id="form-body">
+  <div class="form-wrapper">
+    <h2>Recherche et dénombrement des micro-organismes</h2>
+    <form id="demande-form" method="POST" action="/plat/formulaire/submit-RDMO" onsubmit="return validateForm()">
+      <h3>IDENTIFICATION DES ECHANTILLONS A ANALYSER</h3>
+      <div id="sample-forms-container-rdmo"></div>
+      <button type="button" id="add-sample-rdmo" class="btn-submit">Add Sample</button>
+
+      <div class="form-footer">
+        <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+        <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('sample-forms-container-rdmo');
+  let sampleCount = 0;
+
+  document.getElementById('add-sample-rdmo').addEventListener('click', function() {
+    if (sampleCount < 10) {
+      sampleCount++;
+      const formHtml = `
+        <div class="sample-form" id="sample-form-${sampleCount}">
+          <h4>Echantillon N°${sampleCount} :</h4>
+          <div class="form-field radio-group">
+            <span>Nature des échantillons :</span>
+            <label><input type="radio" name="nature${sampleCount}" value="Eau"> Eau</label>
+            <label><input type="radio" name="nature${sampleCount}" value="Sol"> Sol</label>
+            <label><input type="radio" name="nature${sampleCount}" value="Plante"> Plante</label>
+            <label><input type="radio" name="nature${sampleCount}" value="Autres"> Autres (à préciser )</label>
+            <input type="text" name="details-nature${sampleCount}" id="details-nature${sampleCount}" style="display:none;" placeholder="Précisez">
+          </div>
+          <div class="form-field radio-group">
+            <span>Etat des échantillons :</span>
+            <label><input type="radio" name="etat${sampleCount}" value="Frais"> Frais</label>
+            <label><input type="radio" name="etat${sampleCount}" value="Congelés"> Congelés</label>
+            <label><input type="radio" name="etat${sampleCount}" value="Conservés"> Conservés</label>
+            <label><input type="radio" name="etat${sampleCount}" value="Déshydratés"> Déshydratés</label>
+          </div>
+          <div class="form-field radio-group">
+            <span>Conditions de stockage des échantillons :</span>
+            <label><input type="radio" name="condition_stock${sampleCount}" value="temp ambiante"> Température ambiante</label>
+            <label><input type="radio" name="condition_stock${sampleCount}" value="-20° C"> -20° C</label>
+          </div>
+          <span>Choix des analyses :</span>
+          <div class="form-field check-group">
+            <div class="checkbox-container">
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dfmat 30"> Dénombrement de la flore mésophile aérobie totale à 30°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dgt 22"> Dénombrement des germes totaux à 22°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dct 37"> Dénombrement des coliformes totaux à 37°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dcf 44"> Dénombrement des coliformes fécaux à 44°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dgat 55"> Dénombrement des germes aérobies thermophiles à 55°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dga 37"> Dénombrement des germes anaérobies à 37°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dfl 30"> Dénombrement de la flore lactique à 30°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dlm 25"> Dénombrement des levures et moisissures à 25°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dei 37"> Dénombrement des entérocoques intestinaux à 37°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dsi 37"> Dénombrement des streptocoques intestinaux à 37°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dm"> Dénombrement des Micrococcus</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="dasr 46"> Dénombrement des anaérobies sulfito-réducteurs à 46°C</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="rcp"> Recherche de Clostridium perfringens</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="rb"> Recherche de Bacillus</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="rsscp"> Recherche de Staphylococcus spp. à coagulase positive</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="recbgp"> Recherche d'Escherichia coli β-glucoronidase positive</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="recoh"> Recherche d’Escherichia coli O157:H7</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="rilpa20"> Recherche et identification de Legionella Par API 20E</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="rispa20"> Recherche et identification de Salmonella Par API 20E</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="rippa20"> Recherche et identification de Pseudomonas Par API 20E</label>
+              <label><input type="checkbox" name="analyses${sampleCount}" value="rilpal"> Recherche et identification des Listeria Par API LISTERIA</label>
+            </div>
+          </div>
+        </div>
+      `;
+      container.insertAdjacentHTML('beforeend', formHtml);
+      addEventListenersToNewForm(sampleCount);
+    }
+  });
+
+    function addEventListenersToNewForm(sampleId) {
+    document.querySelectorAll(`input[name="nature${sampleId}"]`).forEach(input => {
+      input.addEventListener('change', function() {
+        const detailsInput = document.getElementById(`details-nature${sampleId}`);
+        if (input.value === 'Autres') {
+          detailsInput.style.display = 'block';
+        } else {
+          detailsInput.style.display = 'none';
+          detailsInput.value = '';
+        }
+      });
+
+
+    });
+  }
+
+  function toggleDetailsInput(id, isVisible) {
+    const detailsInput = document.getElementById(id);
+    detailsInput.style.display = isVisible ? 'block' : 'none';
+    if (!isVisible) detailsInput.value = '';
+  }
+
+  document.querySelectorAll('input[name="validation"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const detailsInput = document.getElementById('validation-details');
+      detailsInput.style.display = input.value === 'oui' ? 'block' : 'none';
+    });
+  });
+});
+</script>
+
+
+
+

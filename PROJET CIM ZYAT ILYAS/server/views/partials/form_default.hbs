@@ -1,0 +1,275 @@
+<div class="form-body">
+  <div class="form-wrapper">
+  <h2>Ajouter une demande</h2>
+  <form id="demande-form" method="POST" action="/plat/formulaire/submit">
+    
+  <div class="form-row">
+
+    <div class="form-group">
+      <label for="nom">Nom:</label>
+      <input type="text" id="nom" name="name" placeholder="Nom" required>
+    </div>
+
+    <div class="form-group">
+      <label for="type">Type:</label>
+      <select name="type" id="type" required onchange="loadStructures()">
+        <option value="" disabled selected>--Select Type--</option>
+        <option value="labs">Labs</option>
+        <option value="equipes">Equipes</option>
+        <option value="centres">Centres</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="structure_name">Structure:</label>
+      <select name="structure_name" id="structure" required>
+        <option value="" disabled selected>--Select Structure--</option>
+        <!-- Options will be populated by JavaScript -->
+      </select>
+    </div>
+
+
+
+
+  </div>
+
+  <div class="form-row">
+    <div class="condition-box">
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <div class="form-field">
+        <label for="nombre-echantillons">Nombre d'échantillons :</label>
+        <input type="number" id="nbr_ech" name="nbr_ech" required>
+      </div>
+      <div class="form-field">
+        <label for="nombre-repetition">Nombre de répétition si nécessaire :</label>
+        <input type="number" id="nbr_rep" name="nbr_rep" required>
+      </div>
+      <div class="form-field">
+        <label for="nature-echantillons">Nature des échantillons (ex : bactérie, sang, plante, ...) :</label>
+        <input type="text" id="nature-echantillons" name="nature" required>
+      </div>
+      <div class="form-field radio-group">
+        <span>Molécule :</span>
+        <label><input type="radio" name="molecule" value="ADN"> ADN</label>
+        <label><input type="radio" name="molecule" value="ARN"> ARN</label>
+        <label><input type="radio" name="molecule" value="Proteine"> Protéine</label>
+        <label><input type="radio" name="molecule" value="Autre"> Autre</label>
+      </div>
+      <div class="form-field">
+        <label for="molecule-preciser">à préciser :</label>
+        <input type="text" id="préciser" name="molecule_precise" required>
+      </div>
+      <div class="form-field radio-group">
+        <span>Toxicité :</span>
+        <label><input type="radio" name="toxicite" value="Toxiques"> Toxiques</label>
+        <label><input type="radio" name="toxicite" value="Non toxiques"> Non toxiques</label>
+      </div>
+      <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. 
+      Si vous avez plus que 32 échantillions veuillez utiliser une fiche supplémentaire.</span>
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <span>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</span>
+      <textarea id="conditions-stockage" name="conditions_stock"></textarea>
+      <div class="form-field radio-group">
+        <span>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</span>
+        <label><input type="radio" name="recuperation_echantillon" value="oui"> Oui</label>
+        <label><input type="radio" name="recuperation_echantillon" value="non"> Non</label>
+      </div>
+      <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+      après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+      échantillions seront détruits automatiquement.</span>
+    </div>
+
+
+    <div class="actes-box">
+      <h4>Les actes</h4>
+      <ul class="actes-list">
+        <li>
+          <label><input type="checkbox" name="actes" value="Spectrophotometre d'absorption atomique"> Spectrophotomètre d'absorption atomique</label>
+          <span class="price">750 DH</span>
+        </li>
+        <li>
+          <label><input type="checkbox" name="actes" value="Spectrophotometre a UV"> Spectrophotomètre à UV</label>
+          <span class="price">700 DH</span>
+        </li>
+        <li>
+          <label><input type="checkbox" name="actes" value="Physico chimie de l'eau"> Physico chimie de l'eau</label>
+          <span class="price">800 DH</span>
+        </li>
+        <li>
+          <label><input type="checkbox" name="actes" value="Physico chimie des aliments"> Physico chimie des aliments</label>
+          <span class="price">800 DH</span>
+        </li>
+        <li>
+          <label><input type="checkbox" name="actes" value="Calorimetrie"> Calorimétrie</label>
+          <span class="price">675 DH</span>
+        </li>
+      </ul>
+
+      <div class="total-price">
+        <h4>Prix</h4>
+        <strong>Total :</strong> <span name="prix" id="total-price-value"></span>
+        <span class="PS">Le prix peut varier selon l'origine de la structure</span>
+      </div>
+    </div>
+
+  </div>
+
+    <div class="form-footer">
+      <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+      <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+    </div>
+
+  </form>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+function loadStructures() {
+  const typeSelect = document.getElementById('type');
+  const structureSelect = document.getElementById('structure');
+  const type = typeSelect.value;
+  
+  // Clear current structure options
+  structureSelect.innerHTML = '<option value="" disabled selected>--Select Structure--</option>';
+
+  // Fetch structures based on selected type
+  fetch(`/plat/formulaire/structures/${type}`)
+    .then(response => response.json())
+    .then(structures => {
+      structures.forEach(structure => {
+        const option = document.createElement('option');
+        option.value = structure.name;
+        option.textContent = structure.name;
+        structureSelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Error loading structures:', error));
+}
+
+
+document.getElementById('type').addEventListener('change', function() {
+  var type = this.value;
+  fetch('/structures/' + type)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(structures) {
+      var structureSelect = document.getElementById('structure'); // Make sure you have this ID in your <select> for structures
+      structureSelect.innerHTML = '';
+      structures.forEach(function(structure) {
+        var option = document.createElement('option');
+        option.value = structure.id;
+        option.textContent = structure.name;
+        structureSelect.appendChild(option);
+      });
+    });
+});
+
+
+function updateStructures() {
+        var typeSelect = document.getElementById('structure_type');
+        var nameSelect = document.getElementById('structure_name');
+        var selectedType = typeSelect.options[typeSelect.selectedIndex].value;
+        
+        // Clear the current structures
+        while (nameSelect.options.length > 0) {
+            nameSelect.remove(0);
+        }
+        
+        // Add a placeholder
+        var defaultOption = new Option('--Select Structure--', '', false, false);
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        nameSelect.appendChild(defaultOption);
+
+        // Populate the dropdown with structures of the selected type
+        fetch(`/get-structures?type=${selectedType}`)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(structures) {
+            structures.forEach(function(structure) {
+                var option = new Option(structure.name, structure.name, false, false);
+                nameSelect.appendChild(option);
+            });
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
+    }
+
+    // Initialize the structures dropdown when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        updateStructures();
+    });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('form');
+  const moleculeRadios = document.querySelectorAll('input[name="molecule"]');
+
+  form.addEventListener('submit', function(event) {
+    const isMoleculeSelected = Array.from(moleculeRadios).some(radio => radio.checked);
+    if (!isMoleculeSelected) {
+      event.preventDefault(); // Prevent the form from submitting
+      alert('Please select a molecule.');
+    }
+  });
+});
+
+
+document.querySelector('form').addEventListener('submit', function(event) {
+  const checkboxes = document.querySelectorAll('.actes-list input[type="checkbox"]:checked');
+  if (checkboxes.length === 0) {
+    event.preventDefault(); // Stop the form from submitting
+    alert('Please select at least one acte.');
+  }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const checkboxes = document.querySelectorAll('.actes-list input[type="checkbox"]');
+  const totalSpan = document.getElementById('total-price-value');
+
+  // Function to update the total price
+  const calculateAndUpdateTotal = () => {
+    let total = 0;
+    checkboxes.forEach(checkbox => {
+      if (checkbox.checked) {
+        const priceText = checkbox.closest('li').querySelector('.price').textContent;
+        const price = parseFloat(priceText.replace(/ DH$/, ''));
+        total += price;
+      }
+    });
+    totalSpan.textContent = `${total.toFixed(2)} DH`;
+  };
+
+  // Attach event listener to each checkbox for the change event
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', calculateAndUpdateTotal);
+  });
+
+  // Initialize total calculation
+  calculateAndUpdateTotal();
+});
+
+
+
+</script>
+

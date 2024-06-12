@@ -1,0 +1,7 @@
+{{> structureHeader}}
+
+{{#if submissions.length}}
+  {{> structureTableDem submissions=submissions }}
+{{else}}
+  <p class="no-table">Votre structure n'a aucune demande listée</p>
+{{/if}}

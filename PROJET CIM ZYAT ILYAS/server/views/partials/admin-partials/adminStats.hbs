@@ -1,0 +1,253 @@
+<section class="stats-table">
+  <section class="stats-row">
+    <div class="main-stats-box">
+      <div>Nombre total de demandes</div>
+      <span>{{totalSubmissions}}</span>
+    </div>
+    <div class="main-stats-box">
+      <div>Nombre de demandes du mois</div>
+      <span>{{currentMonthSubmissions}}</span>
+    </div>
+    <div class="main-stats-box">
+      <div>Délai moyen d'approbation</div>
+      <span>{{averageTimeToApprove}} jours</span>
+    </div>
+  </section>
+</section>
+
+<section class="stats-table">
+  <section class="stats-row">
+    <div class="stats-box stats-dem">
+      <span >Distribution des demandes d'analyses par statut</span   >
+      <div id="submissionsByStatusChart" style="width: 100%; height: 100%;"></div>
+    </div>
+  </section>
+
+  <section class="stats-row">
+    <div class="stats-box stats-dem">
+      <span>Distribution des demandes par formulaire</span>
+      <div id="submissionsByFormChart" style="width: 100%; height: 400px;"></div>
+    </div>
+  </section>
+
+  <section class="stats-row">
+    <div class="stats-box">
+      <span >Nombre de demandes par mois</span>
+      <div id="monthlySubmissionsChart" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <div class="stats-box">
+      <span>Nombre de demandes par laboratoire par mois</span>
+      <div id="submissionsPerPlatformPerMonthChart" style="width: 100%; height: 100%;"></div>
+    </div>
+  </section>
+
+  <section class="stats-row">
+    <div class="stats-box">
+      <span >Distribution des demandes d'analyses par plateforme</span   >
+      <div id="submissionsByPlatformChart" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <div class="stats-box">
+      <span >Distribution des demandes d'analyses par établissement</span    >
+      <div id="submissionsByInstitutionChart" style="width: 100%; height: 100%;"></div>
+    </div>
+  </section>
+
+  
+</section>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const submissionsByStatusChartData = {{{submissionsByStatusChart}}};
+    const monthlySubmissionsChartData = {{{monthlySubmissionsChart}}};
+    const submissionsByPlatformChartData = {{{submissionsByPlatformChart}}};
+    const submissionsByInstitutionChartData = {{{submissionsByInstitutionChart}}};
+    const submissionsByFormChartData = {{{submissionsByFormChart}}};
+    const submissionsPerPlatformPerMonthChartData = {{{submissionsPerPlatformPerMonthChart}}};
+
+    const customColors = {
+      'Demande d\'analyse par Zeta-Sizer': '#FAC858',
+      'Demande d\'analyse par l\'appareil de mesure de conductivité thermique': '#91CC75',
+      'Demande d\'analyse par activité antimicrobienne': '#5470C6',
+      'Demande d\'analyse par recherche et dénombrement des micro-organismes': '#3BA272',
+      'Demande d\'analyse d\'éléments CHNS-O': '#EE6666',
+      'Demande d\'analyses isotropiques des eaux (PICARRO)': '#73C0DE',
+      'Demande d\'analyse par la Spectrométrie d\'Absorption Atomique': '#FC8452',
+      'Demande d\'analyse par spectrophotomètre UV - Visible': '#FFE100',
+      'Demande par Analyseur TOC': '#9A60B4',
+      'Demande par Analyseur UHPLC': '#EA7CCC'
+    };
+
+
+    const ctxStatus = echarts.init(document.getElementById('submissionsByStatusChart'));
+    ctxStatus.setOption({
+      tooltip: { trigger: 'item' },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: submissionsByStatusChartData.labels,
+        textStyle: {
+          fontSize: 10
+        },
+        icon: 'circle'
+      },
+      series: [{
+        type: 'pie',
+        center: ['75%', '50%'],
+        radius: '90%',
+        label: {
+          show: false
+        },
+        data: submissionsByStatusChartData.labels.map((label, i) => ({
+          value: submissionsByStatusChartData.values[i],
+          name: label,
+          itemStyle: {
+            color: getColorForStatus(label)
+          }
+        }))
+      }]
+    });
+
+    const ctxForm = echarts.init(document.getElementById('submissionsByFormChart'));
+    ctxForm.setOption({
+      tooltip: { trigger: 'item' },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: submissionsByFormChartData.labels,
+        textStyle: {
+          fontSize: 10
+        },
+        icon: 'circle'
+      },
+      series: [{
+        type: 'pie',
+        center: ['75%', '50%'],
+        radius: '90%',
+        label: {
+          show: false
+        },
+        data: submissionsByFormChartData.labels.map((label, i) => ({
+          value: submissionsByFormChartData.values[i],
+          name: label,
+          itemStyle: {
+            color: customColors[label]
+          }
+        }))
+      }]
+    });
+
+
+    const ctxPlatform = echarts.init(document.getElementById('submissionsByPlatformChart'));
+    ctxPlatform.setOption({
+      tooltip: { trigger: 'item' },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: submissionsByPlatformChartData.labels,
+        textStyle: {
+          fontSize: 10
+        },
+        icon: 'circle'
+      },
+      series: [{
+        type: 'pie',
+        center: ['75%', '50%'],
+        radius: '75%',
+        label: {
+          show: false
+        },
+        data: submissionsByPlatformChartData.labels.map((label, i) => ({
+          value: submissionsByPlatformChartData.values[i],
+          name: label
+        }))
+      }]
+    });
+
+
+    const ctxInstitution = echarts.init(document.getElementById('submissionsByInstitutionChart'));
+    ctxInstitution.setOption({
+      tooltip: { trigger: 'item' },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: submissionsByInstitutionChartData.labels,
+        textStyle: {
+          fontSize: 10
+        },
+        icon: 'circle'
+      },
+      series: [{
+        type: 'pie',
+        center: ['75%', '50%'],
+        radius: '75%',
+        label: {
+          show: false
+        },
+        data: submissionsByInstitutionChartData.labels.map((label, i) => ({
+          value: submissionsByInstitutionChartData.values[i],
+          name: label
+        }))
+      }]
+    });
+
+
+    const ctxMonthly = echarts.init(document.getElementById('monthlySubmissionsChart'));
+    ctxMonthly.setOption({
+      tooltip: { trigger: 'axis' },
+      xAxis: { type: 'category', data: monthlySubmissionsChartData.labels },
+      yAxis: { type: 'value' },
+      series: [{
+        data: monthlySubmissionsChartData.values,
+        type: 'bar'
+      }]
+    });
+
+    const ctxPlatformPerMonth = echarts.init(document.getElementById('submissionsPerPlatformPerMonthChart'));
+    ctxPlatformPerMonth.setOption({
+      tooltip: { trigger: 'axis' },
+      legend: {
+        data: submissionsPerPlatformPerMonthChartData.series.map(s => s.name),
+        textStyle: {
+          fontSize: 10
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: submissionsPerPlatformPerMonthChartData.categories
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: submissionsPerPlatformPerMonthChartData.series.map(series => ({
+        ...series,
+        label: {
+          show: false // Disable the label to remove the numbers on top of each bar
+        }
+      }))
+    });
+
+    
+
+  });
+
+
+  function getColorForStatus(label) {
+  const colors = {
+    'Clôturé': '#1f78b4',
+    'Demande annulée': '#ad0000',
+    'Demande approuvée': '#33a02c',
+    'Demande déposée': '#ff7f00',
+    'Demande reçue': '#25CCF7',
+    'Demande refusée': '#ff0000',
+    'Résultat final': '#a6cee3',
+    'Résultat partiel': '#b2df8a',
+    'Echantillion demandé': '#FAC858',
+    'Echantillion déposé': '#EA7CCC'
+  };
+  return colors[label] || '#cccccc';
+}
+</script>

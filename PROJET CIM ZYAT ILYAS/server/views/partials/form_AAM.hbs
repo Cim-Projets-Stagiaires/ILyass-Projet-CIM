@@ -1,0 +1,161 @@
+<div class="AAM-body" id="form-body">
+  <div class="form-wrapper">
+    <h2>Activité antimicrobienne</h2>
+    <form id="demande-form" method="POST" action="/plat/formulaire/submit-AAM" onsubmit="return validateForm()">
+      <h3>IDENTIFICATION DES ECHANTILLONS A ANALYSER</h3>
+      <div id="sample-forms-container"></div>
+      <button type="button" id="add-sample" class="btn-submit">Add Sample</button>
+
+
+
+
+      
+
+      <h3>ACTIVITE ANTIMICROBIENNE SUR MILIEU SOLIDE</h3>
+      <div class="form-row">
+        <div class="condition-box">
+          <div class="form-field radio-group">
+            <label><input type="radio" name="mtd_sld" value="Méthode des spots"> Méthode des spots</label>
+            <label><input type="radio" name="mtd_sld" value="Méthode des puits"> Méthode des puits</label>
+            <label><input type="radio" name="mtd_sld" value="Méthode des disques"> Méthode des disques</label>
+          </div>
+          <div class="form-field radio-group">
+            <label><input type="checkbox" name="act_sld" value="Présence ou Absence d'activité"> Présence ou Absence d'activité</label>
+            <label><input type="checkbox" name="act_sld" value="Détérmination de la CMI"> Détérmination de la CMI</label>
+            <label><input type="checkbox" name="act_sld" value="Détérmination de la CMB"> Détérmination de la CMB</label>
+          </div>
+        </div>
+      </div>
+
+      <h3>ACTIVITE ANTIMICROBIENNE SUR MILIEU LIQUIDE</h3>
+      <div class="form-row">
+        <div class="condition-box">
+          <div class="form-field radio-group">
+            <label><input type="radio" name="mtd_lqd" value="Méthode des puits"> Méthode des puits : (Microplaque 96 puits)</label>
+            <label><input type="radio" name="mtd_lqd" value="Méthode NNP"> Méthode du Nombre le Plus Probable (NPP)</label>
+          </div>
+          <div class="form-field radio-group">
+            <label><input type="checkbox" name="act_lqd" value="Présence ou Absence d'activité"> Présence ou Absence d'activité</label>
+            <label><input type="checkbox" name="act_lqd" value="Détérmination de la CMI"> Détérmination de la CMI</label>
+            <label><input type="checkbox" name="act_lqd" value="Détérmination de la CMB"> Détérmination de la CMB</label>
+          </div>
+        </div>
+      </div>
+
+      <h3>GERMES TESTS</h3>
+      <div class="form-row">
+        <div class="condition-box">
+          <div class="sample-form radio-group">
+            <label><input type="checkbox" name="germes" value="Bactéries à gram positif"> Bactéries à gram positif</label>
+            <label><input type="checkbox" name="germes" value="Bactéries à gram négatif"> Bactéries à gram négatif</label>
+            <label><input type="checkbox" name="germes" value="levures"> levures</label>
+            <label><input type="checkbox" name="germes" value="champignons"> champignons</label>
+            <label><input type="checkbox" name="germes" value="autres"> autres</label>
+            <input type="text" id="germes-details" placeholder="Précisez" name="autres_details">
+          </div>
+          <div class="form-field radio-group">
+            <span>Validation / Comparaison aves des Standards? </span>
+            <label><input type="radio" name="validation" value="oui"> oui</label>
+            <input type="text" id="validation-details" style="display:none;" placeholder="Précisez" name="validation_details">
+            <label><input type="radio" name="validation" value="non"> non</label>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="form-footer">
+        <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+        <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('sample-forms-container');
+  let sampleCount = 0;
+
+  document.getElementById('add-sample').addEventListener('click', function() {
+    if (sampleCount < 10) {
+      sampleCount++;
+      const formHtml = `
+        <div class="sample-form" id="sample-form-${sampleCount}">
+          <h4>Echantillon N°${sampleCount} :</h4>
+          <div class="form-field radio-group">
+            <span>Nature des échantillons :</span>
+            <label><input type="radio" name="nature${sampleCount}" value="aqueux"> Extrait aqueux</label>
+            <label><input type="radio" name="nature${sampleCount}" value="organique"> Extrait organique</label>
+            <label><input type="radio" name="nature${sampleCount}" value="mélange"> Mélange à préciser</label>
+            <label><input type="radio" name="nature${sampleCount}" value="autre"> Autres à préciser</label>
+            <input type="text" name="details-nature${sampleCount}" id="details-nature${sampleCount}" style="display:none;" placeholder="Précisez">
+          </div>
+          <div class="form-field radio-group">
+            <span>Etat des échantillons :</span>
+            <label><input type="radio" name="etat${sampleCount}" value="frais"> Frais</label>
+            <label><input type="radio" name="etat${sampleCount}" value="congelés"> Congelés</label>
+            <label><input type="radio" name="etat${sampleCount}" value="conservés"> Conservés</label>
+            <label><input type="radio" name="etat${sampleCount}" value="déshydratés"> Déshydratés</label>
+          </div>
+          <div class="form-field radio-group">
+            <span>Conditions de stockage des échantillons :</span>
+            <label><input type="radio" name="condition_stock${sampleCount}" value="temp ambiante"> Température ambiante</label>
+            <label><input type="radio" name="condition_stock${sampleCount}" value="-20° C"> -20° C</label>
+          </div>
+        </div>
+      `;
+      container.insertAdjacentHTML('beforeend', formHtml);
+      addEventListenersToNewForm(sampleCount);
+    }
+  });
+
+    function addEventListenersToNewForm(sampleId) {
+    document.querySelectorAll(`input[name="nature${sampleId}"]`).forEach(input => {
+      input.addEventListener('change', function() {
+        const detailsInput = document.getElementById(`details-nature${sampleId}`);
+        if (input.value === 'mélange' || input.value === 'autre') {
+          detailsInput.style.display = 'block';
+        } else {
+          detailsInput.style.display = 'none';
+          detailsInput.value = ''; // Clear the text input when hidden
+        }
+      });
+
+
+    });
+  }
+
+
+  function toggleDetailsInput(id, isVisible) {
+    const detailsInput = document.getElementById(id);
+    detailsInput.style.display = isVisible ? 'block' : 'none';
+    if (!isVisible) detailsInput.value = '';
+  }
+
+  document.querySelectorAll('input[name="validation"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const detailsInput = document.getElementById('validation-details');
+      detailsInput.style.display = input.value === 'oui' ? 'block' : 'none';
+    });
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+

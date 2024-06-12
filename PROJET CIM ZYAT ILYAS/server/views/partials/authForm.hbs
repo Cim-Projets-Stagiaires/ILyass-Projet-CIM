@@ -1,0 +1,255 @@
+<div class="container" id="container">
+
+
+        <div class="form-container sign-up">
+
+            
+            <form method="POST" action="/auth/register" id="registration-form">
+            <h1>Créez Votre Compte</h1>
+
+            <section class="register-flex">
+                
+              <section class="register-block">
+                <input type="text" name="name" placeholder="Nom" required>
+                
+                <input type="email" name="email" placeholder="Email" required>
+                
+                <input type="number" name="phone" placeholder="Numéro de téléphone" required>
+                
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                
+                <input type="password" name="confirm_password" placeholder="Confirmer Mot de passe" required>
+              </section>
+
+
+              <section class="register-block">
+                <select name="etablissement" id="etablissement-select" required>
+                    <option value="" disabled selected>--Selectionnez Votre Etablissement--</option>
+                </select>
+                
+                <select name="structure" id="structure-select" required>
+                    <option value="" disabled selected>--Selectionnez Votre Laboratoire--</option>
+                </select>
+                
+                <select name="status" id="status" onchange="toggleNiveau()" required>
+                    <option value="" disabled selected>Choisir le statut</option>
+                    <option value="Enseignant chercheur">Enseignant chercheur</option>
+                    <option value="Etudiant">Etudiant</option>
+                </select>
+                
+                <select name="niveau" id="niveau" style="display:none;" required>
+                    <option value="" disabled selected>Choisir le niveau d'études</option>
+                    <option value="License">License</option>
+                    <option value="Master">Master</option>
+                    <option value="Doctorat">Doctorat</option>
+                </select>
+              </section>  
+
+            </section>
+
+                
+                <button type="submit">S'inscrire</button>
+
+            </form>
+        </div>
+
+        <div class="form-container sign-in">
+            <form action="/auth/login" method="POST" id="login-form">
+                <h1>Connectez-vous</h1>
+                <input type="email" name="email" placeholder="Email">
+                <input type="password" name="password" placeholder="Mot de passe">
+                <a href="#">Mot de passe oublié?</a>
+                <button type="submit">Se Connecter</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bon Retour!</h1>
+                    <p>Entrez vos informations pour utiliser toutes les fonctionnalités du site</p>
+                    <button class="hidden" id="login">Se connecter</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Bonjour!</h1>
+                    <p>Inscrivez-vous pour utiliser toutes les fonctionnalités du site</p>
+                    <button class="hidden" id="register">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const etablissementSelect = document.getElementById('etablissement-select');
+  const structureSelect = document.getElementById('structure-select');
+  const registrationForm = document.getElementById('registration-form');
+  const loginForm = document.getElementById('login-form');
+
+  // Populate etablissements on page load
+  fetchEtablissements();
+
+  // Listener for when an etablissement is selected
+  etablissementSelect.addEventListener('change', fetchStructures);
+
+  if (registrationForm) {
+    registrationForm.addEventListener('submit', handleFormSubmission);
+  }
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLoginFormSubmission);
+  }
+
+  fetchEtablissements();
+
+
+  etablissementSelect.addEventListener('change', fetchStructures);
+
+
+  function handleFormSubmission(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const formValues = Object.fromEntries(formData);
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formValues),
+    };
+
+    // Perform the fetch call
+    fetch('/auth/register', fetchOptions)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: data.success,
+          text: 'Vous pouvez vous connecter',
+        });
+      } else if (data.emailError) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: data.emailError,
+        });
+      } else if (data.pwdError) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: data.pwdError,
+        });
+      }
+      else {
+        throw new Error(data.error || 'There was an issue with your registration.');
+      }
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        const errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          errorMessageElement.textContent = error.message;
+        }
+      });
+  }
+});
+
+function fetchEtablissements() {
+  fetch('/auth/etablissements')
+    .then(response => response.json())
+    .then(data => {
+      const etablissementSelect = document.getElementById('etablissement-select');
+      etablissementSelect.innerHTML = ''; // Clear existing options first
+
+      // Correctly add the default option
+      etablissementSelect.appendChild(new Option('--Selectionnez Votre Etablissement--', '', true, true)); 
+
+      data.forEach(etablissement => {
+        let option = new Option(etablissement.etablissement, etablissement.etablissement);
+        etablissementSelect.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error('Error loading etablissements:', error);
+    });
+}
+
+function fetchStructures() {
+  const selectedEtablissement = document.getElementById('etablissement-select').value;
+  const structureSelect = document.getElementById('structure-select');
+  structureSelect.innerHTML = ''; // Clear current options
+
+  fetch(`/auth/structures/${encodeURIComponent(selectedEtablissement)}`)
+    .then(response => response.json())
+    .then(structures => {
+      structures.forEach(structure => {
+        let option = new Option(structure.name, structure.id);
+        structureSelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+function handleLoginFormSubmission(event) {
+    event.preventDefault(); 
+    const formData = new FormData(event.target);
+    const formValues = Object.fromEntries(formData);
+    const fetchOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formValues),
+    };
+
+    fetch('/auth/login', fetchOptions)
+      .then(response => response.json())
+      .then(data => {
+        if (data.redirect) {
+          // Redirect if login is successful
+          window.location.href = data.redirect;
+        } else {
+          // Handle specific errors with SweetAlert
+          if (data.errorEmail) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur d\'identification',
+              text: data.errorEmail,
+            });
+          } else if (data.errorPwd) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur d\'identification',
+              text: data.errorPwd,
+            });
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Login error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to process login.',
+        });
+      });
+  }
+
+function toggleNiveau() {
+  const status = document.getElementById('status').value;
+  const niveauSelect = document.getElementById('niveau');
+
+  if (status === 'Etudiant') {
+    niveauSelect.style.display = 'block';
+    niveauSelect.setAttribute('required', ''); // Make the niveau field required if the status is Etudiant
+  } else {
+    niveauSelect.style.display = 'none';
+    niveauSelect.removeAttribute('required'); // Remove the required attribute if the status is not Etudiant
+  }
+}
+
+
+
+</script>

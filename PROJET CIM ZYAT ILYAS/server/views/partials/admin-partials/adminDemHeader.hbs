@@ -1,0 +1,49 @@
+<div class="panelHeader">
+  <div class="panelLogo">
+    <img src="/images/Logo-CIM.png" alt="Logo">
+  </div>
+
+  <div class="admin__menu">
+    <a  href="/plat/dashboard">Dashboard</a>
+    <a id="active" href="/plat/dashboard/adminDem">Demandes d'Analyses</a>
+    <a href="/plat/dashboard/adminUsers">Utilisateurs</a>
+  </div>
+
+  <div class="user-profile">
+    <img src="{{profilePic}}" alt="Profile Picture" class="profile-pic" id="profilePic">
+    <div class="profileMenu" id="profileMenu">
+      <a href="/editProfile">Modifier Votre Profile</a>
+      <a href="/plat/panel">Demande D'Analyses</a>
+      <a href="/logout">Se Déconnecter</a>
+    </div>
+  </div>
+</div>
+
+<section id="page-banner" class="struc-header">
+  <h2>Gestion des Demandes d'Analyses</h2>
+  <h1>Bienvenue {{name}}</h1>
+</section>
+
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const profilePic = document.getElementById('profilePic');
+  const profileMenu = document.getElementById('profileMenu');
+
+  profilePic.addEventListener('click', function() {
+    profileMenu.style.display = profileMenu.style.display === 'block' ? 'none' : 'block';
+  });
+
+  window.addEventListener('click', function(event) {
+    if (!event.target.matches('.profile-pic')) {
+      if (profileMenu.style.display === 'block') {
+        profileMenu.style.display = 'none';
+      }
+    }
+  });
+});
+
+</script>

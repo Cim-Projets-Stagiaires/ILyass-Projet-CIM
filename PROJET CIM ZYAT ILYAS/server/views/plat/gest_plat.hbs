@@ -1,0 +1,7 @@
+{{> plateformeHeader}}
+
+{{#if submissions.length}}
+  {{> plateformeTableDem submissions=submissions }}
+{{else}}
+  <p class="no-table">Vous n'avez aucune demande listée à votre plateforme</p>
+{{/if}}

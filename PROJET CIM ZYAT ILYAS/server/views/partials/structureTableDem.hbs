@@ -1,0 +1,173 @@
+<section class="styled-table-container">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Code de la Fiche</th>
+        <th>Date de Création</th>
+        <th class="user-table-head">Utilisateur</th>
+        <th>Type de Demande</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each submissions}}
+        <tr>
+          <td>{{this.code}}</td>
+          <td>{{this.date_de_creation}}</td>
+          <td><a href="/plat/respo_struc/viewProfile/{{this.user_id}}" class="user-link">{{this.user_name}}</a></td>
+          <td>{{this.form_label}}</td>
+          <td>
+            <div class="status-data {{getStatusClass this.status}}">{{this.status}}</div>
+          </td>
+          <td class="actions-data">
+            <a href="#" class="view-btn" data-id="{{this.id}}" data-form="{{this.form_name}}"><i class="fas fa-eye"></i></a>
+            <a href="/plat/respo_struc/receive-submission/{{id}}" class="recue-btn action-btn" data-status="{{this.status}}"><i class="fas fa-check"></i></a>
+            <a href="/plat/respo_struc/deny-submission/{{id}}" class="deny-btn action-btn" data-status="{{this.status}}"><i class="fas fa-times-circle"></i></a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.action-btn').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      const status = this.getAttribute('data-status');
+      const allowedStatuses = ['Demande déposée', 'Demande annulée', 'Demande reçue'];
+
+      if (!allowedStatuses.includes(status)) {
+        event.preventDefault();
+        Swal.fire({
+          icon: 'warning',
+          title: 'Action non autorisée',
+          text: 'Vous ne pouvez pas modifier cette demande.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  });
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.view-btn').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+      const submissionId = this.getAttribute('data-id');
+      const formName = this.getAttribute('data-form');
+
+      fetch(`/plat/view-form/form-infos/${formName}/${submissionId}`)
+        .then(response => response.json())
+        .then(data => {
+          const submission = data.submission;
+          const user = data.user;
+          const structure = data.structure;
+          const formDetails = data.formDetails;
+          const formNameMap = {
+            'form_AZS': 'Demande d\'analyse par Zeta-Sizer',
+            'form_AMCT': 'Demande d\'analyse par l\'appareil de mesure de conductivité thermique',
+            'form_AAM': 'Demande d\'analyse par activité antimicrobienne',
+            'form_RDMO': 'Demande d\'analyse par recherche et dénombrement des micro-organismes',
+            'form_CHNSO': 'Demande d\'analyse d\'éléments CHNS-O',
+            'form_SAA': 'Demande d\'analyse par la Spectrométrie d\'Absorption Atomique',
+            'form_UV': 'Demande d\'analyse par spectrophotomètre UV - Visible',
+            'form_TOC': 'Demande par Analyseur TOC',
+            'form_PIC': 'Demande d\'analyses isotropiques des eaux (PICARRO)',
+            'form_UHPLC': 'Demande par Analyseur UHPLC'
+          };
+
+          const getStatusClass = (status) => {
+            switch (status) {
+              case 'Demande déposée':
+                return 'status-deposee';
+              case 'Demande reçue':
+                return 'status-recue';
+              case 'Demande annulée':
+                return 'status-annulee';
+              case 'Demande approuvée':
+                return 'status-approuvee';
+              case 'Demande refusée':
+                return 'status-refusee';
+              case 'Echantillion demandé':
+                return 'status-demande';
+              case 'Echantillion déposé':
+                return 'status-depose';
+              case 'Résultat partiel':
+                return 'status-partiel';
+              case 'Résultat final':
+                return 'status-final';
+              case 'Clôturé':
+                return 'status-cloture';
+              default:
+                return '';
+            }
+          };
+
+          const progressBarHtml = `
+            <div class="progress-bar">
+              <div class="progress-bar-item ${['Demande déposée', 'Demande reçue', 'Demande approuvée', 'Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Demande déposée > </div>
+              <div class="progress-bar-item ${['Demande reçue', 'Demande approuvée', 'Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Demande reçue > </div>
+              <div class="progress-bar-item ${['Demande approuvée', 'Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Demande approuvée > </div>
+              <div class="progress-bar-item ${['Echantillion demandé', 'Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Echantillion demandé > </div>
+              <div class="progress-bar-item ${['Echantillion déposé', 'Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Echantillion déposé > </div>
+              <div class="progress-bar-item ${['Résultat partiel', 'Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Résultat partiel > </div>
+              <div class="progress-bar-item ${['Résultat final', 'Clôturé'].indexOf(submission.status) >= 0 ? 'active' : ''}">Résultat final > </div>
+              <div class="progress-bar-item ${submission.status === 'Clôturé' ? 'active' : ''}">Clôturé</div>
+            </div>
+          `;
+
+          const popupHtml = `
+            <div class="popup-container">
+              <div class="infos-popup-header">
+                <h2>Info de la demande</h2>
+              </div>
+              <div class="popup-views">
+                <a href="/plat/view-form/${submission.form_name}/${submission.id}" class="btn">Voir la demande</a>
+                ${submission.partiel ? `<a href="/files/partiel/${submission.partiel}" target="_blank" class="btn">Résultat partiel</a>` : '<p>Résultat partiel indisponible</p>'}
+                ${submission.final ? `<a href="/files/final/${submission.final}" target="_blank" class="btn">Résultat final</a>` : '<p>Résultat final indisponible</p>'}
+              </div>
+              <div class="popup-content">
+                <div class="left-section">
+                  <h4>Demande</h4>
+                  <p><strong>Code de la fiche :</strong> ${formDetails.code}</p>
+                  <p><strong>Nom :</strong> ${formNameMap[submission.form_name]}</p>
+                  <p><strong>Date de création :</strong> ${submission.date_de_creation}</p>
+                  <p><strong>Créé par :</strong> ${user.name}</p>
+                  <p><strong>Statut du Demandeur :</strong> ${user.status}</p>
+                  ${user.status === 'Etudiant' ? `<p><strong>Niveau :</strong> ${user.niveau}</p>` : ''}
+                  <p><strong>Statut :</strong> <span class="status-data ${getStatusClass(submission.status)}">${submission.status}</span></p>
+                </div>
+                <div class="right-section">
+                  <h4>Etablissement</h4>
+                  <p><strong>Nom :</strong> ${structure.name}</p>
+                  <p><strong>Etablissement :</strong> ${structure.etablissement}</p>
+                </div>
+              </div>
+              ${['Demande annulée', 'Demande refusée'].includes(submission.status) ? '' : progressBarHtml}
+            </div>
+          `;
+
+          Swal.fire({
+            html: popupHtml,
+            showConfirmButton: false,
+            width: '80%',
+            customClass: {
+              popup: 'infos-popup'
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching submission details:', error);
+        });
+    });
+  });
+});
+
+
+</script>

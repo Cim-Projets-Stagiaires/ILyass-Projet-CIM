@@ -1,0 +1,168 @@
+<div class="UV-body" id="form-body">
+  <div class="form-wrapper">
+  <h2>Demande d'analyse par spectrophotomètre UV - Visible</h2>
+  <form id="demande-form" method="POST" action="/plat/formulaire/submit-UV"onsubmit="return validateForm()">
+    
+
+  <div class="form-row">
+    <div class="condition-box">
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <div class="form-field">
+        <label for="nbr_ech">Nombre d'échantillons : (Max 15 ech)</label>
+        <input type="number" id="nbr_ech" name="nbr_ech" required min="1" max="15">
+      </div>
+      <div class="form-field">
+        <label for="nbr_rep">Nombre de répétitions si nécessaires :</label>
+        <input type="number" id="nbr_rep" name="nbr_rep">
+      </div>
+      <div class="form-field">
+        <label for="nature">Nature des échantillions :</label>
+        <input type="text" id="nature" name="nature">
+      </div>
+      <div class="form-field radio-group">
+        <span>Etat :</span>
+        <label><input type="radio" name="etat" value="Liquide"> Liquide</label>
+        <label><input type="radio" name="etat" value="Solide"> Solide</label>
+      </div>
+      <div class="form-field radio-group">
+        <span>Toxicité :</span>
+        <label><input type="radio" name="Toxicité" value="Toxiques"> Toxiques</label>
+        <label><input type="radio" name="Toxicité" value="Non Toxiques"> Non toxiques</label>
+        <label><input type="radio" name="Toxicité" value="Radioactifs"> Radioactifs</label>
+      </div>
+      <div class="form-field radio-group">
+        <span>Conditions d'analyse :</span>
+        <label><input type="checkbox" name="cond_alys" value="Absorbance"> Absorbance</label>
+        <label><input type="checkbox" name="cond_alys" value="Spectre"> Spectre</label>
+      </div>
+
+      <div class="form-section">
+        <label>Veuillez indiquer les références de vos échantillons</label>
+        <div class="tables-container">
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>N° échantillon</th>
+                        <th>Réf échantillon</th>
+                    </tr>
+                    <tr id="sample-row-1">
+                        <td>01</td>
+                        <td><input type="text" name="ref_ech_1"></td>
+                    </tr>
+                    <tr id="sample-row-2">
+                        <td>02</td>
+                        <td><input type="text" name="ref_ech_2"></td>
+                    </tr>
+                    <tr id="sample-row-3">
+                        <td>03</td>
+                        <td><input type="text" name="ref_ech_3"></td>
+                    </tr>
+                    <tr id="sample-row-4">
+                        <td>04</td>
+                        <td><input type="text" name="ref_ech_4"></td>
+                    </tr>
+                    <tr id="sample-row-5">
+                        <td>05</td>
+                        <td><input type="text" name="ref_ech_5"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>N° échantillon</th>
+                        <th>Réf échantillon</th>
+                    </tr>
+                    <tr id="sample-row-6">
+                        <td>06</td>
+                        <td><input type="text" name="ref_ech_6"></td>
+                    </tr>
+                    <tr id="sample-row-7">
+                        <td>07</td>
+                        <td><input type="text" name="ref_ech_7"></td>
+                    </tr>
+                    <tr id="sample-row-8">
+                        <td>08</td>
+                        <td><input type="text" name="ref_ech_8"></td>
+                    </tr>
+                    <tr id="sample-row-9">
+                        <td>09</td>
+                        <td><input type="text" name="ref_ech_9"></td>
+                    </tr>
+                    <tr id="sample-row-10">
+                        <td>10</td>
+                        <td><input type="text" name="ref_ech_10"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>N° échantillon</th>
+                        <th>Réf échantillon</th>
+                    </tr>
+                    <tr id="sample-row-11">
+                        <td>11</td>
+                        <td><input type="text" name="ref_ech_11"></td>
+                    </tr>
+                    <tr id="sample-row-12">
+                        <td>12</td>
+                        <td><input type="text" name="ref_ech_12"></td>
+                    </tr>
+                    <tr id="sample-row-13">
+                        <td>13</td>
+                        <td><input type="text" name="ref_ech_13"></td>
+                    </tr>
+                    <tr id="sample-row-14">
+                        <td>14</td>
+                        <td><input type="text" name="ref_ech_14"></td>
+                    </tr>
+                    <tr id="sample-row-15">
+                        <td>15</td>
+                        <td><input type="text" name="ref_ech_15"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+
+      <br>
+
+
+
+
+
+
+
+      <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. 
+      Si vous avez plus que 15 échantillions veuillez utiliser une fiche supplémentaire.</span>
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <span>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</span>
+      <textarea id="conditions-stockage" name="conditions_stock"></textarea>
+      <div class="form-field radio-group">
+        <span>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</span>
+        <label><input type="radio" name="recuperation_echantillon" value="oui"> Oui</label>
+        <label><input type="radio" name="recuperation_echantillon" value="non"> Non</label>
+      </div>
+      <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+      après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+      échantillions seront détruits automatiquement.</span>
+
+    </div>
+
+
+
+
+    
+
+  </div>
+
+    <div class="form-footer">
+      <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+      <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+    </div>
+
+  </form>
+  </div>
+
+</div>

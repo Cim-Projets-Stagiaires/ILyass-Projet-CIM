@@ -1,0 +1,70 @@
+<section class="editprofile-body">
+
+  <form id="editProfileForm" enctype="multipart/form-data">
+
+    <div id="pic-container">
+    <div class="profile-pic-container" onclick="document.getElementById('fileInput').click();">
+      <img id="profilePicPreview" src="{{userData.picture}}" alt="Profile Picture" style="cursor: pointer;">
+
+    </div>
+    
+  </div>
+
+
+  <section class="main-container">
+
+    <section class="str-container"> 
+      <br>
+      <div id="name-container">
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="{{userData.name}}" readonly>
+      </div>
+
+      <div id="email-container">
+        <label for="email">Email:</label>
+        <input type="text" name="email" value="{{userData.email}}" readonly>
+      </div>
+
+      <div id="phone-container"> 
+        <label for="phone">Phone Number:</label>
+        <input type="number" name="phone" value="{{userData.phone}}" readonly>
+      </div>
+
+      <div id="etab-container"> 
+        <label for="etablissement">Etablissement:</label>
+        <input type="text" value="{{structure.etablissement}}" readonly>
+      </div>
+
+      <div id="struc-container"> 
+        <label for="structure">Structure:</label>
+        <input type="text" value="{{structure.name}}" readonly>
+      </div>
+
+      <div id="status-container"> 
+          <label for="status">Status:</label>
+          <input type="text" name="name" value="{{userData.status}}" readonly>
+      </div>
+
+      <div id="niveau-container">
+          <label for="niveau">Niveau d'études (if Etudiant):</label>
+          <input type="text" name="phone" value="{{userData.niveau}}" readonly>
+      </div>
+
+    </section> 
+    
+  </section>
+
+  
+    
+  
+
+
+    <div class="form-footer">
+      <a href="{{referer}}"><button type="button" class="btn-cancel">Retourner</button></a>
+    </div>
+  </form>
+
+</section>
+
+
+

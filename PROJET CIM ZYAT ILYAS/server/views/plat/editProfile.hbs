@@ -1,0 +1,156 @@
+<section class="editprofile-body">
+  <form id="editProfileForm" method="post" action="/editProfile/" enctype="multipart/form-data">
+
+    <div id="pic-container">
+      <div class="profile-pic-container" onclick="document.getElementById('fileInput').click();">
+        <img id="profilePicPreview" src="{{userData.picture}}" alt="Profile Picture" style="cursor: pointer;">
+        <div class="overlay">
+          <div class="pencil"><i class="fa fa-pencil"></i></div>
+        </div>
+      </div>
+      <input type="file" id="fileInput" name="profilePic" accept="image/png, image/jpeg, image/jpg" style="display: none;" onchange="previewImage();">
+    </div>
+
+    <section class="main-container">
+
+      <section class="str-container"> 
+        <label class="cont-title">Vos Informations Personelles : </label>
+        <div id="name-container">
+          <label for="name">Nom et Prénom :</label>
+          <input type="text" name="name" value="{{userData.name}}">
+        </div>
+
+        <div id="phone-container"> 
+          <label for="phone">Numéro de Téléphone :</label>
+          <input type="number" name="phone" value="{{userData.phone}}">
+        </div>
+
+        <div id="etab-container"> 
+          <label for="etablissement">Etablissement :</label>
+          <select name="etablissement" id="etablissement-select">
+            {{#each etablissements}}
+              <option value="{{this}}" {{#if (eq this ../selectedEtablissement)}}selected{{/if}}>{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div id="struc-container"> 
+          <label for="structure">Structure de Recherche :</label>
+          <select name="structure_id" id="structure-select">
+            {{#each structures}}
+              <option value="{{this.id}}" {{#if (eq this.id ../selectedStructureId)}}selected{{/if}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div id="status-container"> 
+          <label for="status">Statut :</label>
+          <select name="status" id="status" required onchange="toggleNiveau()">
+            <option value="Enseignant chercheur" {{#if (eq userData.status "Enseignant chercheur")}}selected{{/if}}>Enseignant chercheur</option>
+            <option value="Etudiant" {{#if (eq userData.status "Etudiant")}}selected{{/if}}>Etudiant</option>
+          </select>
+        </div>
+
+        <div id="niveau-container">
+          <label for="niveau">Niveau d'études (cas Etudiant):</label>
+          <select name="niveau" id="niveau">
+            <option value="License" {{#if (eq userData.niveau "License")}}selected{{/if}}>License</option>
+            <option value="Master" {{#if (eq userData.niveau "Master")}}selected{{/if}}>Master</option>
+            <option value="Doctorat" {{#if (eq userData.niveau "Doctorat")}}selected{{/if}}>Doctorat</option>
+          </select>
+        </div>
+      </section> 
+
+      <section class="pwd-container">
+        <label class="cont-title">Mot de Passe : </label>
+        <div id="old-container"> 
+          <label for="oldPassword">Votre Mot de Passe : </label>
+          <input type="password" id="oldPassword" name="oldPassword" required>
+        </div>
+
+        <div id="new-container"> 
+          <label for="newPassword">Nouveau Mot de Passe : </label>
+          <input type="password" id="newPassword" name="newPassword">
+        </div>
+
+        <div id="confrim-container"> 
+          <label for="confirmPassword">Confirmer le Nouveau Mot de Passe : </label>
+          <input type="password" id="confirmPassword" name="confirmPassword">
+        </div>
+      </section>
+    </section>
+
+    <div class="form-footer">
+      <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+      <button type="submit" class="btn-submit">Confirmer les Modification</button>
+    </div>
+  </form>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const etablissementSelect = document.getElementById('etablissement-select');
+  const structureSelect = document.getElementById('structure-select');
+  const initialEtablissement = '{{selectedEtablissement}}';
+  const initialStructureId = '{{selectedStructureId}}';
+
+  function fetchEtablissements() {
+    fetch('/editProfile/etablissements')
+      .then(response => response.json())
+      .then(etablissements => {
+        etablissementSelect.innerHTML = '';
+        etablissements.forEach(etab => {
+          const option = document.createElement('option');
+          option.value = etab;
+          option.text = etab;
+          etablissementSelect.appendChild(option);
+        });
+
+        if (initialEtablissement) {
+          etablissementSelect.value = initialEtablissement;
+          fetchStructures(initialEtablissement, initialStructureId);
+        }
+      })
+      .catch(error => console.error('Error fetching etablissements:', error));
+  }
+
+  function fetchStructures(etablissement, selectedStructureId) {
+    fetch(`/editProfile/api/structures/${encodeURIComponent(etablissement)}`)
+      .then(response => response.json())
+      .then(structures => {
+        structureSelect.innerHTML = '';
+        structures.forEach(struct => {
+          const option = document.createElement('option');
+          option.value = struct.id; // Use the structure id as value
+          option.text = struct.name;
+          structureSelect.appendChild(option);
+        });
+
+        if (selectedStructureId) {
+          structureSelect.value = selectedStructureId;
+        }
+      })
+      .catch(error => console.error('Error fetching structures:', error));
+  }
+
+  etablissementSelect.addEventListener('change', function() {
+    const etablissement = this.value;
+    fetchStructures(etablissement);
+  });
+
+  fetchEtablissements();
+});
+
+function previewImage() {
+  const file = document.getElementById('fileInput').files[0];
+  const reader = new FileReader();
+
+  reader.onloadend = function() {
+    document.getElementById('profilePicPreview').src = reader.result;
+  }
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+</script>

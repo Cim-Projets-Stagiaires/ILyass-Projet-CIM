@@ -1,0 +1,168 @@
+<div class="AZS-body" id="form-body">
+  <div class="form-wrapper">
+    <h2>Demande d'analyse par Zeta-Sizer</h2>
+    <form id="demande-form" method="POST" action="/plat/formulaire/submit-AZS" onsubmit="return validateForm()">
+      
+
+      
+      <div class="form-row">
+
+        <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+        <div class="form-line">
+
+          <div class="sample-form">
+            <div class="form-field">
+              <label for="nbr_ech">Nombre d'échantillons :</label>
+              <input type="number" id="nbr_ech" name="nbr_ech" required min="1" max="4">
+            </div>
+          </div>
+
+          <div class="sample-form">
+            <div class="form-field">
+              <label for="nombre-repetition">Nombre de répétition si nécessaire :</label>
+              <input type="number" id="nbr_rep" name="nbr_rep" required>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-line">
+
+          <div class="sample-form">
+            <div class="form-field">
+              <label for="nature-echantillons">Nature des échantillons :</label>
+              <input type="text" id="nature-echantillons" name="nature" required>
+            </div>
+          </div>
+
+          <div class="sample-form">
+            <div class="form-field">
+              <label for="molecule-preciser">Solvant dispersant :</label>
+              <input type="text" id="solvant" name="solvant" required>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="sample-form">
+          <div class="form-field radio-group">
+            <label>Toxicité :</label>
+            <span><input type="radio" name="toxicite" value="Toxiques"> Toxiques</span>
+            <span><input type="radio" name="toxicite" value="Non toxiques"> Non toxiques</span>
+            <span><input type="radio" name="toxicite" value="Radioactifs"> Radioactifs</span>
+          </div>
+        </div>
+
+        <div class="sample-form">
+          <div class="form-field radio-group">
+            <label>Type d'analyse :</label>
+            <span><input type="radio" name="type" value="Potentiel Zeta"> Potentiel Zeta</span>
+            <span><input type="radio" name="type" value="Distribution des tailles des particules"> Distribution des tailles des particules</span>
+          </div>
+        </div>
+
+        <div class="sample-form">
+          <div class="NB">
+                <p>Veuillez noter que:</p>
+                <ul>
+                    <li>Le volume minimal à fournir par échantillon est 1 ml.</li>
+                    <li>La concentration des échantillons peut être entre 0.1 et 1.0 mg/ml (en fonction de la nature des échantillons).</li>
+                    <li>Les échantillons doivent être préalablement mis en solution et filtré (filtre 5 µm); les particules supérieures à 1 µm ne conviennent pas pour la technique DLS (diffusion dynamique de la lumière) car elles peuvent entraîner une sédimentation et de ce fait, une fluctuation du signal.</li>
+                    <li>Les particules fluorescentes / absorbantes dans le rouge doivent être évitées (le laser fonctionne à 633 nm).</li>
+                </ul>
+          </div>
+        </div>
+
+        <div class="sample-form">
+          <div class="form-section">
+            <label>Veuillez indiquer les références de vos échantillons</label>
+            <div class="tables-container">
+                <div class="table-wrap" id="sample-table">
+                    <table>
+                        <tr>
+                            <th>N° échantillon</th>
+                            <th>Réf échantillon</th>
+                        </tr>
+                        <tr id="sample-row-1">
+                            <td>01</td>
+                            <td><input type="text" name="ref_ech_1"></td>
+                        </tr>
+                        <tr id="sample-row-2">
+                            <td>02</td>
+                            <td><input type="text" name="ref_ech_2"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <tr>
+                            <th>N° échantillon</th>
+                            <th>Réf échantillon</th>
+                        </tr>
+                        <tr id="sample-row-3">
+                            <td>03</td>
+                            <td><input type="text" name="ref_ech_3"></td>
+                        </tr>
+                        <tr id="sample-row-4">
+                            <td>04</td>
+                            <td><input type="text" name="ref_ech_4"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sample-form">
+          <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. 
+          Si vous avez plus que 32 échantillions veuillez utiliser une fiche supplémentaire.</span>
+
+          <span class="NB">Le nombre maximal d'échantillions à analyser par demande est de 4. 
+          Les demandeurs ne peuvent déposer une nouvelle demande qu'après traitement de la première</span>
+          
+          <span class="NB">Seule la personne détenteur des échantillions a le droit d'assister à
+            l'analyse et de récupérer les résultats.</span>
+        </div>
+          
+        <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+        <div class="sample-form">
+          <label>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</label>
+          <textarea id="conditions-stockage" name="conditions_stock"></textarea>
+          <div class="form-field radio-group">
+            <label>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</label>
+            <span><input type="radio" name="recuperation_echantillon" value="oui"> Oui</span>
+            <span><input type="radio" name="recuperation_echantillon" value="non"> Non</span>
+          </div>
+          <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+          après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+          échantillions seront détruits automatiquement.</span>
+        </div>
+        
+
+      </div>
+
+
+
+      <div class="form-footer">
+        <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+        <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

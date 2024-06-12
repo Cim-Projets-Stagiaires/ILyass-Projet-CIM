@@ -1,0 +1,137 @@
+<div class="PIC-body" id="form-body">
+  <div class="form-wrapper">
+    <h2>Demande d'analyses isotropiques des eaux (PICARRO)</h2>
+    <form id="demande-form" method="POST" action="/plat/formulaire/submit-PIC" onsubmit="return validateForm()">
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <div class="form-field">
+        <label for="nbr_ech">Nombre d'échantillons : (Max 20 ech)</label>
+        <input type="number" id="nbr_ech" name="nbr_ech" required min="1" max="20">
+      </div>
+      <div class="form-field radio-group">
+        <span>Toxicité :</span>
+        <label><input type="radio" name="Toxicité" value="Toxiques"> Toxiques</label>
+        <label><input type="radio" name="Toxicité" value="Non Toxiques"> Non toxiques</label>
+        <label><input type="radio" name="Toxicité" value="Radioactifs"> Radioactifs</label>
+      </div>
+
+
+      <div id="sample-forms-container-pic"></div>
+      <button type="button" id="add-sample-pic" class="btn-submit">Add Sample</button>
+
+
+      <span>Veuillez fournir un bref descriptif géologique de l'encaissant: Unités lithologiques</span>
+      <textarea id="desc" name="desc"></textarea>
+
+      <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. 
+      Si vous avez plus que 15 échantillions veuillez utiliser une fiche supplémentaire.</span>
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <span>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</span>
+      <textarea id="conditions-stockage" name="conditions_stock"></textarea>
+      <div class="form-field radio-group">
+        <span>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</span>
+        <label><input type="radio" name="recuperation_echantillon" value="oui"> Oui</label>
+        <label><input type="radio" name="recuperation_echantillon" value="non"> Non</label>
+      </div>
+      <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+      après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+      échantillions seront détruits automatiquement.</span>
+
+
+
+      <div class="form-footer">
+        <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+        <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('sample-forms-container-pic');
+  let sampleCount = 0;
+
+  document.getElementById('add-sample-pic').addEventListener('click', function() {
+    if (sampleCount < 20) {
+      sampleCount++;
+      const formHtml = `
+        <div class="sample-form" id="sample-form-${sampleCount}">
+          <h4>Echantillon N°${sampleCount} :</h4>
+          <div class="form-field">
+            <label for="nature${sampleCount}">Nature de l'eau :</label>
+            <input type="text" id="nature${sampleCount}" name="nature${sampleCount}" required>
+          </div>
+          <div class="form-field">
+            <label for="date${sampleCount}">Date de prélèvement de l'échantiollon :</label>
+            <input type="date" id="date${sampleCount}" name="date${sampleCount}" required>
+          </div>
+          <div class="form-field">
+            <label for="temp${sampleCount}">T° de prélèvement de l'échantillion :</label>
+            <input type="number" id="temp${sampleCount}" name="temp${sampleCount}" required>
+          </div>
+          <div class="form-field">
+            <label for="coord${sampleCount}">Coordonnées (Long. Lati. Alti.) ou région :</label>
+            <input type="text" id="coord${sampleCount}" name="coord${sampleCount}" required>
+          </div>
+          <div class="form-field">
+            <label for="conductivité${sampleCount}">Conductivité us/cm :</label>
+            <input type="number" id="conductivité${sampleCount}" name="conductivité${sampleCount}" required>
+          </div>
+          <div class="form-field">
+            <label for="ph${sampleCount}">pH :</label>
+            <input type="number" id="ph${sampleCount}" name="ph${sampleCount}" required>
+          </div>
+  
+        </div>
+      `;
+      container.insertAdjacentHTML('beforeend', formHtml);
+      addEventListenersToNewForm(sampleCount);
+    }
+  });
+
+    function addEventListenersToNewForm(sampleId) {
+    document.querySelectorAll(`input[name="nature${sampleId}"]`).forEach(input => {
+      input.addEventListener('change', function() {
+        const detailsInput = document.getElementById(`details-nature${sampleId}`);
+        if (input.value === 'mélange' || input.value === 'autre') {
+          detailsInput.style.display = 'block';
+        } else {
+          detailsInput.style.display = 'none';
+          detailsInput.value = ''; // Clear the text input when hidden
+        }
+      });
+
+
+    });
+  }
+
+
+  function toggleDetailsInput(id, isVisible) {
+    const detailsInput = document.getElementById(id);
+    detailsInput.style.display = isVisible ? 'block' : 'none';
+    if (!isVisible) detailsInput.value = '';
+  }
+
+  document.querySelectorAll('input[name="validation"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const detailsInput = document.getElementById('validation-details');
+      detailsInput.style.display = input.value === 'oui' ? 'block' : 'none';
+    });
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+

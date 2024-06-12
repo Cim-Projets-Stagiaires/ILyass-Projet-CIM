@@ -1,0 +1,317 @@
+<div class="UHPLC-body" id="form-body">
+  <div class="form-wrapper">
+  <h2>Demande par Analyseur UHPLC</h2>
+  <form id="demande-form" method="POST" action="/plat/formulaire/submit-UHPLC"onsubmit="return validateForm()">
+    
+
+  <div class="form-row">
+    <div class="sample-form">
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <div class="form-field radio-group">
+        <span>Type d'analyse :</span>
+        <label><input type="radio" name="type" value="Qualitative"> Qualitative</label>
+        <label><input type="radio" name="type" value="Quantitative"> Quantitative</label>
+      </div>
+      <div class="form-field">
+        <label for="molécules">Molécules à identifier :</label>
+        <input type="text" id="molécules" name="molécules" required>
+      </div>
+      <div class="form-field">
+        <label for="nbr_ech">Nombre d'échantillons : (Max 18 ech)</label>
+        <input type="number" id="nbr_ech" name="nbr_ech" required min="1" max="18">
+      </div>
+      <div class="form-field">
+        <label for="nbr_rep">Nombre de répétitions si nécessaires :</label>
+        <input type="number" id="nbr_rep" name="nbr_rep">
+      </div>
+      <div class="form-field">
+        <label for="nature">Nature des échantillons :</label>
+        <input type="text" id="nature" name="nature" required>
+      </div>
+      <div class="form-field radio-group">
+        <span>Toxicité :</span>
+        <label><input type="radio" name="Toxicité" value="Toxiques"> Toxiques</label>
+        <label><input type="radio" name="Toxicité" value="Non Toxiques"> Non toxiques</label>
+        <label><input type="radio" name="Toxicité" value="Radioactifs"> Radioactifs</label>
+      </div>
+      <div class="form-field radio-group">
+        <span>solubles :</span>
+        <label><input type="radio" name="solubles" value="oui"> oui</label>
+        <label><input type="radio" name="solubles" value="non"> non</label>
+      </div>
+      <div class="form-field">
+        <label for="slv_a">Solvant A :</label>
+        <input type="text" id="slv_a" name="slv_a" required>
+      </div>
+      <div class="form-field">
+        <label for="slv_b">Solvant B :</label>
+        <input type="text" id="slv_b" name="slv_b" required>
+      </div>
+      <div class="form-field">
+        <label for="debit">Débit (ml/min) :</label>
+        <input type="number" id="debit" name="debit" required>
+      </div>
+      <div class="form-field">
+        <label for="lgr_onde">Longueur d'ondes :</label>
+        <input type="number" id="lgr_onde" name="lgr_onde" required>
+      </div>
+      <div class="form-field">
+        <label for="volume">volume :</label>
+        <input type="number" id="volume" name="volume" required>
+      </div>
+      <div class="form-field">
+        <label for="temp_ech">temp_ech :</label>
+        <input type="number" id="temp_ech" name="temp_ech" required>
+      </div>
+      <div class="form-field">
+        <label for="temp_cln">temp_cln :</label>
+        <input type="number" id="temp_cln" name="temp_cln" required>
+      </div>
+      <div class="form-field radio-group">
+        <span>gradient :</span>
+        <label><input type="radio" name="gradient" value="iso"> iso</label>
+        <label><input type="radio" name="gradient" value="ramp"> ramp</label>
+        <label><input type="radio" name="gradient" value="multi"> multi</label>
+      </div>
+
+
+      <div class="form-section">
+        <div class="tables-container">
+          <div class="table-wrap">
+            <table>
+              <tr>
+                <th>Temps</th>
+                <th>%B</th>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_1"></td>
+                <td><input type="number" name="B_1"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_2"></td>
+                <td><input type="number" name="B_2"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_3"></td>
+                <td><input type="number" name="B_3"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_4"></td>
+                <td><input type="number" name="B_4"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_5"></td>
+                <td><input type="number" name="B_5"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_6"></td>
+                <td><input type="number" name="B_6"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_7"></td>
+                <td><input type="number" name="B_7"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <tr>
+                <th>Temps</th>
+                <th>%B</th>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_8"></td>
+                <td><input type="number" name="B_8"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_9"></td>
+                <td><input type="number" name="B_9"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_10"></td>
+                <td><input type="number" name="B_10"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_11"></td>
+                <td><input type="number" name="B_11"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_12"></td>
+                <td><input type="number" name="B_12"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_13"></td>
+                <td><input type="number" name="B_13"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="temps_14"></td>
+                <td><input type="number" name="B_14"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+
+      <div class="form-section">
+        <label>Veuillez indiquer la concentration de vos échantillons (Le volume minimal à fournir par échantillion est 2 ml)</label>
+        <div class="tables-container">
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Réf échantillon</th>
+                        <th>C(g/l)</th>
+                    </tr>
+                    <tr id="sample-row-1">
+                        <td>01</td>
+                        <td><input type="text" name="ref_ech_1"></td>
+                    </tr>
+                    <tr id="sample-row-2">
+                        <td>02</td>
+                        <td><input type="text" name="ref_ech_2"></td>
+                    </tr>
+                    <tr id="sample-row-3">
+                        <td>03</td>
+                        <td><input type="text" name="ref_ech_3"></td>
+                    </tr>
+                    <tr id="sample-row-4">
+                        <td>04</td>
+                        <td><input type="text" name="ref_ech_4"></td>
+                    </tr>
+                    <tr id="sample-row-5">
+                        <td>05</td>
+                        <td><input type="text" name="ref_ech_5"></td>
+                    </tr>
+                    <tr id="sample-row-6">
+                        <td>06</td>
+                        <td><input type="text" name="ref_ech_6"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Réf échantillon</th>
+                        <th>C(g/l)</th>
+                    </tr>
+                    
+                    <tr id="sample-row-7">
+                        <td>07</td>
+                        <td><input type="text" name="ref_ech_7"></td>
+                    </tr>
+                    <tr id="sample-row-8">
+                        <td>08</td>
+                        <td><input type="text" name="ref_ech_8"></td>
+                    </tr>
+                    <tr id="sample-row-9">
+                        <td>09</td>
+                        <td><input type="text" name="ref_ech_9"></td>
+                    </tr>
+                    <tr id="sample-row-10">
+                        <td>10</td>
+                        <td><input type="text" name="ref_ech_10"></td>
+                    </tr>
+                    <tr id="sample-row-11">
+                        <td>11</td>
+                        <td><input type="text" name="ref_ech_11"></td>
+                    </tr>
+                    <tr id="sample-row-12">
+                        <td>12</td>
+                        <td><input type="text" name="ref_ech_12"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Réf échantillon</th>
+                        <th>C(g/l)</th>
+                    </tr>
+                    
+                    <tr id="sample-row-13">
+                        <td>13</td>
+                        <td><input type="text" name="ref_ech_13"></td>
+                    </tr>
+                    <tr id="sample-row-14">
+                        <td>14</td>
+                        <td><input type="text" name="ref_ech_14"></td>
+                    </tr>
+                    <tr id="sample-row-15">
+                        <td>15</td>
+                        <td><input type="text" name="ref_ech_15"></td>
+                    </tr>
+                    <tr id="sample-row-16">
+                        <td>16</td>
+                        <td><input type="text" name="ref_ech_16"></td>
+                    </tr>
+                    <tr id="sample-row-17">
+                        <td>17</td>
+                        <td><input type="text" name="ref_ech_17"></td>
+                    </tr>
+                    <tr id="sample-row-18">
+                        <td>18</td>
+                        <td><input type="text" name="ref_ech_18"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+
+      <br>
+
+
+
+      <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. 
+      Si vous avez plus que 15 échantillions veuillez utiliser une fiche supplémentaire.</span>
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <span>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</span>
+      <textarea id="conditions-stockage" name="conditions_stock"></textarea>
+      <div class="form-field radio-group">
+        <span>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</span>
+        <label><input type="radio" name="recuperation_echantillon" value="oui"> Oui</label>
+        <label><input type="radio" name="recuperation_echantillon" value="non"> Non</label>
+      </div>
+      <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+      après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+      échantillions seront détruits automatiquement.</span>
+
+    </div>
+
+
+
+
+    
+
+  </div>
+
+    <div class="form-footer">
+      <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+      <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+    </div>
+
+  </form>
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const radioButtons = document.querySelectorAll('input[name="nature"]');
+  const detailsInput = document.getElementById('details_nature_toc');
+
+  radioButtons.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'autre') {
+        detailsInput.style.display = 'block';
+      } else {
+        detailsInput.style.display = 'none';
+      }
+    });
+  });
+});
+
+</script>

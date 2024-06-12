@@ -1,0 +1,181 @@
+<div class="AMCT-body" id="form-body">
+  <div class="form-wrapper">
+  <h2>Demande d'analyse par l'appareil de mesure de conductivité thermique</h2>
+  <form id="demande-form" method="POST" action="/plat/formulaire/submit-AMCT"onsubmit="return validateForm()">
+    
+
+  <div class="form-row">
+
+    <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+    <div class="form-line">
+      <div class="sample-form">
+        
+        <div class="form-field">
+          <label for="nbr_ech">Nombre d'échantillons :</label>
+          <input type="number" id="nbr_ech" name="nbr_ech" required min="1" max="10">
+        </div>
+      
+        <div class="form-field">
+          <label for="nature-echantillons">Nature des échantillons :</label>
+          <input type="text" id="nature-echantillons" name="nature" required>
+        </div>
+      
+        <div class="form-field radio-group">
+          <span>Toxicité :</span>
+          <label><input type="radio" name="toxicite" value="Toxiques"> Toxiques</label>
+          <label><input type="radio" name="toxicite" value="Non toxiques"> Non toxiques</label>
+          <label><input type="radio" name="toxicite" value="Radioactifs"> Radioactifs</label>
+        </div>
+        
+      </div>
+
+      <div class="sample-form">
+        <div class="form-field">
+          <label>Etat des échantillions :</label>
+        </div>
+
+        <div class="form-field radio-group">
+          <span>Solide <input type="radio" name="etat_ech" value="Solide"> (taille minimale : 1x2x2 cm3 (épaisseur x largeur x longeur))</span>
+        </div>
+
+        <div class="form-field">
+          <span>Merci de fournir 2 échantillions identiques pour la réalisation des analyses</span>
+        </div>
+
+        <div class="form-field radio-group">
+          <span>Liquide <input type="radio" name="etat_ech" value="Liquide"> (volume minimal : 40 ml)</span>
+        </div>
+      </div>
+    </div>
+
+
+    <h6>Conditions d'analyse</h6>
+    <div class="sample-form">
+      <div class="form-field">
+        <label for="temperature">Veuillez spécifier la température d'analyse (vous pouvez mentionner des températures entre la
+          température ambiante et 50°C) :</label>
+      </div>
+      <div class="form-field">
+        <input type="number" id="temperature" name="temperature" required>
+      </div>
+    </div>
+
+    <h6 class="custom-title-box">Veuillez indiquer les références de vos échantillons</h6>
+    <div class="sample-form">
+      <div class="NB">
+            <p>NB:</p>
+            <ul>
+                <li>Chaque T° d'analyse demandée au niveau d'un échantillion esy considéree comme échantillion.</li>
+                <li>Si le demandeur spécifie des températures autres que la température ambiante, le nombre maximal d'échantillions par demande est 4.</li>
+                <li>Si le demandeur spécifie la température ambiante comme température d'analyse, le nombre maximal d'échantillions par demande est 10.</li>
+            </ul>
+      </div>
+    </div>
+
+    <div class="sample-form">
+      
+      <div class="form-section">
+        
+        <div class="tables-container">
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>N° échantillon</th>
+                        <th>Réf échantillon</th>
+                    </tr>
+                    <tr id="sample-row-1">
+                        <td>01</td>
+                        <td><input type="text" name="ref_ech_1"></td>
+                    </tr>
+                    <tr id="sample-row-2">
+                        <td>02</td>
+                        <td><input type="text" name="ref_ech_2"></td>
+                    </tr>
+                    <tr id="sample-row-3">
+                        <td>03</td>
+                        <td><input type="text" name="ref_ech_3"></td>
+                    </tr>
+                    <tr id="sample-row-4">
+                        <td>04</td>
+                        <td><input type="text" name="ref_ech_4"></td>
+                    </tr>
+                    <tr id="sample-row-5">
+                        <td>05</td>
+                        <td><input type="text" name="ref_ech_5"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>N° échantillon</th>
+                        <th>Réf échantillon</th>
+                    </tr>
+                    <tr id="sample-row-6">
+                        <td>06</td>
+                        <td><input type="text" name="ref_ech_6"></td>
+                    </tr>
+                    <tr id="sample-row-7">
+                        <td>07</td>
+                        <td><input type="text" name="ref_ech_7"></td>
+                    </tr>
+                    <tr id="sample-row-8">
+                        <td>08</td>
+                        <td><input type="text" name="ref_ech_8"></td>
+                    </tr>
+                    <tr id="sample-row-9">
+                        <td>09</td>
+                        <td><input type="text" name="ref_ech_9"></td>
+                    </tr>
+                    <tr id="sample-row-10">
+                        <td>10</td>
+                        <td><input type="text" name="ref_ech_10"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sample-form">
+
+      <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. </span>
+
+      <span class="NB">Les demandeurs ne peuvent déposer une nouvelle demande qu'après le traitepment de la première</span>
+
+    </div>
+
+
+    <h4>CONDITIONS DE STOCKAGE DES ÉCHANTILLONS AVANT ANALYSE</h4>
+    <div class="sample-form">
+      <label>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</label>
+      <textarea id="conditions-stockage" name="conditions_stock"></textarea>
+      <div class="form-field radio-group">
+        <label>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</label>
+        <span><input type="radio" name="recuperation_echantillon" value="oui"> Oui</span>
+        <span><input type="radio" name="recuperation_echantillon" value="non"> Non</span>
+      </div>
+      <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+      après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+      échantillions seront détruits automatiquement.</span>
+    </div>
+
+
+    
+
+  </div>
+
+    <div class="form-footer">
+      <a href="/plat/panel"><button type="button" class="btn-cancel">Annuler</button></a>
+      <button type="submit" value="Submit" class="btn-submit">Ajouter</button>
+    </div>
+
+  </form>
+  </div>
+
+</div>
+
+
+
+

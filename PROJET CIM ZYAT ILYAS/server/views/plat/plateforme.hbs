@@ -1,0 +1,82 @@
+<section class="platHeader">
+    <div class="panelLogo">
+        <img src="/images/Logo-CIM.png" alt="Logo">
+    </div>
+    <div>Selectionnez une plateforme</div>
+</section>
+
+<section class="selection-plateforme">
+
+    <div class="plateforme" id="ACM">Plateforme Analyse et Caractérisation des matériaux
+        <a href="/plat/plateforme/analyse/form_AZS" class="link">Demande d'analyse par Zeta-Sizer</a>
+        <a href="/plat/plateforme/analyse/form_AMCT" class="link">Demande d'analyse par l'appareil de mesure de conductivité thermique</a>
+    </div>
+
+    <div class="plateforme" id="APC">Plateforme Analyses Physico-Chimique
+        <a href="/plat/plateforme/analyse/form_CHNSO" class="link">Demande d'analyse d'éléments CHNS-O</a>
+        <a href="/plat/plateforme/analyse/form_SAA" class="link">Demande d'analyse par la Spectrométrie d'Absorption Atomique</a>
+        <a href="/plat/plateforme/analyse/form_UV" class="link">Demande d'analyse par spectrophotomètre UV - Visible</a>
+        <a href="/plat/plateforme/analyse/form_TOC" class="link">Demande par Analyseur TOC</a>
+        <a href="/plat/plateforme/analyse/form_PIC" class="link">Demande d'analyses isotropiques des eaux (PICARRO)</a>
+    </div>
+
+    <div class="plateforme" id="ACC">Plateforme Analyse et Caractérisation par Chromatographie
+        <a href="/plat/plateforme/analyse/form_UHPLC" class="link">Demande d'analyse par chromatographie liquide à ultra 
+        haute performance (UHPLC) avec détécteur à barettes de diodes</a>
+        
+    </div>
+
+    <div class="plateforme" id="PB">Plateforme Biotech
+        <a href="/plat/plateforme/analyse/form_AAM" class="link">Demande d'analyse par activité antimicrobienne</a>
+        <a href="/plat/plateforme/analyse/form_RDMO" class="link">Demande d'analyse par recherche et dénombrement des micro-organismes</a>
+    </div>
+
+</section>
+
+
+<script>
+    // Function to handle click events on plateforme elements
+    document.querySelectorAll('.plateforme').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            // Remove the 'expanded' class from all plateforme elements except the clicked one
+            document.querySelectorAll('.plateforme').forEach(function(el) {
+                if (el !== element) {
+                    el.classList.remove('expanded');
+                    // Hide the links
+                    var links = el.querySelectorAll('.link');
+                    links.forEach(function(link) {
+                        link.style.display = 'none';
+                    });
+                }
+            });
+
+            // Toggle the 'expanded' class on the clicked plateforme
+            this.classList.toggle('expanded');
+            event.stopPropagation(); // Prevent event from bubbling up to the document body
+            
+            // Toggle the display of links
+            var links = this.querySelectorAll('.link');
+            links.forEach(function(link) {
+                link.style.display = (element.classList.contains('expanded')) ? 'inline-block' : 'none';
+            });
+        });
+    });
+
+    // Add click event listener to the document body
+    document.body.addEventListener('click', function(event) {
+        // Check if the clicked element is not a .plateforme or one of its children
+        if (!event.target.closest('.plateforme')) {
+            // Remove the expanded class from all .plateforme elements
+            document.querySelectorAll('.plateforme').forEach(function(element) {
+                element.classList.remove('expanded');
+                // Hide the links
+                var links = element.querySelectorAll('.link');
+                links.forEach(function(link) {
+                    link.style.display = 'none';
+                });
+            });
+        }
+    });
+</script>
+
+

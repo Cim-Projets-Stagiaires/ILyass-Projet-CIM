@@ -1,0 +1,13 @@
+<section id="form-details">
+            <form id="contactForm" action="/contact/submit-form" method="POST">
+                <input type="text" placeholder="Your Name" name="name">
+                <input type="email" placeholder="E-mail" name="email" required>
+                <input type="text" placeholder="Subject" name="subject">
+                <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
+
+                <button type ="submit" id="submit-button" class="normal">Send</button>
+            </form>
+            <div id="loading-popup" class="loading-overlay" style="display: none;">
+                <div id="loading-spinner"></div>
+            </div>
+</section>

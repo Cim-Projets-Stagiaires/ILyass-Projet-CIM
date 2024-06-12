@@ -1,0 +1,63 @@
+
+{{>panelHeader}}
+
+{{#if submissions.length}}
+  {{> panelTableDem submissions=submissions }}
+{{else}}
+  <p class="no-table">Vous n'avez aucune demande listée</p>
+{{/if}}
+
+
+
+<script>
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.delete-btn').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+      const deleteUrl = this.getAttribute('href');
+      const deleteWarningHtml = `
+        <div class="alert-popup">
+          <div class="alert-popup-header">
+            <img src="/images/icon-warning-orange.png" alt="Warning" class="alert-popup-icon">
+            <span class="alert-popup-title">Etes-vous sûr de vouloir supprimer cette demande?</span>
+          </div>
+          <div class="alert-popup-body">
+            <p>Cette opération est irréversible!</p>
+            <div class="alert-popup-actions">
+              <button id="confirmDelete" class="alert-popup-confirm-btn">Supprimer</button>
+              <button id="cancelDelete" class="alert-popup-cancel-btn">Annuler</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      Swal.fire({
+        html: deleteWarningHtml,
+        showConfirmButton: false,
+        showCancelButton: false,
+        focusConfirm: false,
+        customClass: {
+          popup: 'my-custom-popup'
+        },
+        didOpen: () => {
+          // Set up custom buttons within the modal
+          document.getElementById('confirmDelete').addEventListener('click', () => {
+            window.location.href = deleteUrl;
+          });
+          document.getElementById('cancelDelete').addEventListener('click', () => {
+            Swal.close();
+          });
+        }
+      });
+    });
+  });
+});
+
+
+</script>
+
+

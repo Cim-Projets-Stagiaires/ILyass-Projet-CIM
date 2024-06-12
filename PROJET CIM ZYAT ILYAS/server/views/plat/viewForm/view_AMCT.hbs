@@ -1,0 +1,409 @@
+<div class="display" id="form-body">
+  <div class="form-wrapper">
+    
+  
+    <div class="form-row">
+
+      <div class="sample-form-img">
+        <img src="/images/UCA.png" alt="Logo">
+        <img src="/images/CAC.png" alt="Logo">
+        <img src="/images/CIM-SOLO.png" alt="Logo">
+      </div>
+
+      <div class="form-line">
+        <div class="sample-form">
+          <label>Référence : E(G)-03/PR-01</label>
+        </div>
+
+        <div class="sample-form">
+          <label>Edition : 02</label>
+        </div>
+      </div>
+
+      <div class="sample-form">
+        <h3>Demande d'analyse par l'appareil de mesure de conductivité thermique</h3>
+      </div>
+    
+
+      <h4>IDENTIFICATION DU DEMANDEUR</h4>
+      <div class="form-line">
+        <div class="sample-form">
+          <div class="form-field">
+            <label for="date_de_creation">Date :</label>
+            <input type="text" id="date_de_creation" name="date_de_creation" value="{{submission.date_de_creation}}" readonly>
+          </div>
+          <div class="form-field">
+            <label for="phone">Tel :</label>
+            <input type="number" id="phone" name="phone" value="{{user.phone}}" readonly>
+          </div>
+          
+        </div>
+        <div class="sample-form">
+          <div class="form-field">
+            <label for="name">Nom et prénom du demandeur :</label>
+            <input type="text" id="name" name="name" value="{{user.name}}" readonly>
+          </div>
+          <div class="form-field">
+            <label for="email">Mail :</label>
+            <input type="text" id="email" name="email" value="{{user.email}}" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="sample-form">
+        <div class="form-field">
+          <label for="Signature">Signature du demandeur :</label>
+          <input type="text" id="Signature" readonly>
+        </div>
+      </div>
+
+
+      <h5>Etablissement universitaire</h5>
+      <div class="sample-form">
+        <div class="form-field">
+          <label for="Etablissement">Etablissement :</label>
+          <input type="text" id="Etablissement" value="{{structure.etablissement}}" readonly>
+        </div>
+      </div>
+
+      <div class="sample-form">
+        <div class="form-field">
+          <label for="structure"> Intitulé de la structure de recherche :</label>
+          <input type="text" id="structure" value="{{structure.name}}" readonly>
+        </div>
+        <div class="form-field">
+          <label for="type">Type de la structure de recherche :</label>
+          <span><input type="radio" id="type" {{#if (eq structure.type 'labs')}}checked{{/if}} disabled> Laboratoire</span>
+          <span><input type="radio" id="type" {{#if (eq structure.type 'equipes')}}checked{{/if}} disabled> Equipe</span>
+          <span><input type="radio" id="type" {{#if (eq structure.type 'centres')}}checked{{/if}} disabled> Centre</span>
+        </div>
+      </div>
+
+      <div class="sample-form">
+        <div class="form-field">
+          <label for="Statut">Statut du demandeur :</label>
+          <span><input type="radio" id="Status" {{#if (eq user.status 'Enseignant chercheur')}}checked{{/if}} disabled> Enseignant chercheur</span>
+          <span><input type="radio" id="Status" {{#if (eq user.status 'Etudiant')}}checked{{/if}} disabled> Etudiant</span>
+        </div>
+        <div class="form-field">
+          <label for="Statut">Niveau d'étude de l'étudiant :</label>
+          <span><input type="radio" id="niveau" {{#if (eq user.niveau 'License')}}checked{{/if}} disabled> License</span>
+          <span><input type="radio" id="niveau" {{#if (eq user.niveau 'Master')}}checked{{/if}} disabled> Master</span>
+          <span><input type="radio" id="niveau" {{#if (eq user.niveau 'Doctorat')}}checked{{/if}} disabled> Doctorat</span>
+        </div>
+        
+      </div>
+
+      <div class="sample-form">
+        <div class="form-field">
+          <label>Encadrant (dans le cas des étudiants)</label>
+        </div>
+        <div class="form-line">
+          <div class="form-line">
+            <div class="form-field">
+              <label>Nom et prénom :</label>
+            </div>
+          </div>
+          <div class="form-line">
+            <div class="form-field">
+              <label>Signature :</label>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="sample-form">
+        <div class="form-field">
+          <label>Responsable de la structure de recherche</label>
+        </div>
+        <div class="form-line">
+          <div class="form-line">
+            <div class="form-field">
+              <label>Nom et prénom :</label>
+            </div>
+          </div>
+          <div class="form-line">
+            <div class="form-field">
+              <label>Signature et cachet :</label>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+
+      <h4>CONDITIONS D'ANALYSE ET IDENTIFICATION DES ÉCHANTILLONS</h4>
+      <div class="form-line">
+        <div class="sample-form">
+          
+          <div class="form-field">
+            <label for="nbr_ech">Nombre d'échantillons :</label>
+            <input type="number" id="nbr_ech" name="nbr_ech" value="{{formDetails.nbr_ech}}" readonly>
+          </div>
+        
+          <div class="form-field">
+            <label for="nature-echantillons">Nature des échantillons :</label>
+            <input type="text" id="nature-echantillons" name="nature" value="{{formDetails.nature}}" readonly>
+          </div>
+        
+          <div class="form-field radio-group">
+          <label>Toxicité :</label>
+          <span><input type="radio" name="toxicite" value="Toxiques" {{#if (eq formDetails.toxicite 'Toxiques')}}checked{{/if}} disabled> Toxiques</span>
+          <span><input type="radio" name="toxicite" value="Non toxiques" {{#if (eq formDetails.toxicite 'Non toxiques')}}checked{{/if}} disabled> Non toxiques</span>
+          <span><input type="radio" name="toxicite" value="Radioactifs" {{#if (eq formDetails.toxicite 'Radioactifs')}}checked{{/if}} disabled> Radioactifs</span>
+        </div>
+          
+        </div>
+
+        <div class="sample-form">
+          <div class="form-field">
+            <label>Etat des échantillions :</label>
+          </div>
+
+          <div class="form-field radio-group">
+            <span>Solide <input type="radio" name="etat_ech" value="Solide" {{#if (eq formDetails.etat_ech 'Solide')}}checked{{/if}} disabled> (taille minimale : 1x2x2 cm3 (épaisseur x largeur x longeur))</span>
+          </div>
+
+          <div class="form-field">
+            <span>Merci de fournir 2 échantillions identiques pour la réalisation des analyses</span>
+          </div>
+
+          <div class="form-field radio-group">
+            <span>Liquide <input type="radio" name="etat_ech" value="Liquide" {{#if (eq formDetails.etat_ech 'Liquide')}}checked{{/if}} disabled> (volume minimal : 40 ml)</span>
+          </div>
+        </div>
+      </div>
+
+
+      <h6>Conditions d'analyse</h6>
+      <div class="sample-form">
+        <div class="form-field">
+          <label for="temperature">Veuillez spécifier la température d'analyse (vous pouvez mentionner des températures entre la
+            température ambiante et 50°C) :</label>
+        </div>
+        <div class="form-field">
+          <input type="number" id="temperature" name="temperature" value="{{formDetails.temperature}}" readonly>
+        </div>
+      </div>
+
+      <h6 class="custom-title-box">Veuillez indiquer les références de vos échantillons</h6>
+      <div class="sample-form">
+        <div class="NB">
+              <p>NB:</p>
+              <ul>
+                  <li>Chaque T° d'analyse demandée au niveau d'un échantillion esy considéree comme échantillion.</li>
+                  <li>Si le demandeur spécifie des températures autres que la température ambiante, le nombre maximal d'échantillions par demande est 4.</li>
+                  <li>Si le demandeur spécifie la température ambiante comme température d'analyse, le nombre maximal d'échantillions par demande est 10.</li>
+              </ul>
+        </div>
+      </div>
+
+      <div class="sample-form">
+        
+        <div class="form-section">
+          
+          <div class="tables-container">
+              <div class="table-wrap">
+                  <table>
+                      <tr>
+                          <th>N° échantillon</th>
+                          <th>Réf échantillon</th>
+                      </tr>
+                      <tr id="sample-row-1">
+                          <td>01</td>
+                          <td><input type="text" name="ref_ech_1" value="{{formDetails.ref_ech_1}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-2">
+                          <td>02</td>
+                          <td><input type="text" name="ref_ech_2" value="{{formDetails.ref_ech_2}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-3">
+                          <td>03</td>
+                          <td><input type="text" name="ref_ech_3" value="{{formDetails.ref_ech_3}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-4">
+                          <td>04</td>
+                          <td><input type="text" name="ref_ech_4" value="{{formDetails.ref_ech_4}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-5">
+                          <td>05</td>
+                          <td><input type="text" name="ref_ech_5" value="{{formDetails.ref_ech_4}}" readonly></td>
+                      </tr>
+                  </table>
+              </div>
+              <div class="table-wrap">
+                  <table>
+                      <tr>
+                          <th>N° échantillon</th>
+                          <th>Réf échantillon</th>
+                      </tr>
+                      <tr id="sample-row-6">
+                          <td>06</td>
+                          <td><input type="text" name="ref_ech_6" value="{{formDetails.ref_ech_6}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-7">
+                          <td>07</td>
+                          <td><input type="text" name="ref_ech_7" value="{{formDetails.ref_ech_7}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-8">
+                          <td>08</td>
+                          <td><input type="text" name="ref_ech_8" value="{{formDetails.ref_ech_8}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-9">
+                          <td>09</td>
+                          <td><input type="text" name="ref_ech_9" value="{{formDetails.ref_ech_9}}" readonly></td>
+                      </tr>
+                      <tr id="sample-row-10">
+                          <td>10</td>
+                          <td><input type="text" name="ref_ech_10" value="{{formDetails.ref_ech_10}}" readonly></td>
+                      </tr>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sample-form">
+
+        <span class="NB">NB: C'est le numéro de l'échantillion qui sera affiché au niveau du rapport d'analyse. </span>
+
+        <span class="NB">Les demandeurs ne peuvent déposer une nouvelle demande qu'après le traitepment de la première</span>
+
+      </div>
+
+
+      <h4>CONDITIONS DE STOCKAGE DES ÉCHANTILLONS AVANT ANALYSE</h4>
+      <div class="sample-form">
+        <label>Veuillez préciser les conditions de stockage de vos échantillons, nécessaires à respecter, lors de leur séjour au CAC (T°, humidité, ...) :</label>
+        <textarea id="conditions-stockage" name="conditions_stock" readonly>{{submission.conditions_stock}}</textarea>
+        <div class="form-field radio-group">
+          <label>Voulez-vous récupérer le reste des échantillons (s'il en reste) après analyse ?</label>
+          <span><input type="radio" name="recuperation_echantillon" value="oui" {{#if (eq submission.recup 'oui')}}checked{{/if}} disabled> Oui</span>
+          <span><input type="radio" name="recuperation_echantillon" value="non" {{#if (eq submission.recup 'non')}}checked{{/if}} disabled> Non</span>
+        </div>
+        <span class="NB">Si oui, la récupération du reste des échantillions (s'il en reste) doit se faire au maximum 15 jours
+        après la réception des résultats d'analyse. Dépassant ce délai, ils seront détruits. Si aucune case n'est cochée, les
+        échantillions seront détruits automatiquement.</span>
+      </div>
+
+
+      <h4>RUBRIQUE A REMPLIR AU CAS DE MODIFICATIONS APPORTEES A LA DEMANDE</h4>
+      <div class="sample-form">
+        <textarea id="conditions-stockage" readonly></textarea>
+      
+        <div class="form-line">
+          <div class="form-line">
+            <div class="form-field">
+              <label for="date_de_creation">Date :</label>
+            </div>
+          </div>
+          <div class="form-line">
+            <div class="form-field">
+              <label for="date_de_creation">Nom et signature du demandeur :</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <h4>RUBRIQUE RESERVEE A L'ADMINISTRATION</h4>
+      <div class="form-line">
+        <div class="sample-form">
+          <div class="form-field">
+            <label>Demande repectionnée le :</label>
+            <input type="text" id="date_de_reception" name="date_de_reception" readonly>
+          </div>
+          <div class="form-field">
+            <label>Demande transmise au laboratoire le :</label>
+          </div>
+        </div>
+        <div class="sample-form">
+          <div class="form-field">
+            <label>Cachet du CAC :</label>
+          </div>
+          <div class="form-field">
+            <label>Récupérée par :</label>
+          </div>
+        </div>
+      </div>
+
+
+      <h4>RUBRIQUE RESERVEE AU LABORATOIRE</h4>
+
+        <div class="sample-form">
+          <div class="form-field">
+            <label>Code de la fiche :</label>
+            <input type="text" id="code" name="code" value="{{formDetails.code}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-line">
+          <div class="sample-form">
+            <div class="form-field">
+              <label>Demande faisable :</label>
+              <span><input type="radio" disabled> Oui</span>
+              <span><input type="radio" disabled> Non</span>
+            </div>
+          </div>
+          <div class="sample-form">
+            <div class="form-field">
+              <label>Signature du responsable du laboratoire :</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="sample-form">
+          <label>En cas de non faisabilité de la demande, veuillez indiquer les raisons :</label>
+          <textarea id="conditions-stockage"readonly></textarea>
+          <div class="form-field">
+            <label>Rendez-vous donné le :</label>
+          </div>
+          <div class="form-field">
+            <label>Echantillions répectionnés le :</label>
+          </div>
+          <label>En cas de refus de la réception des échantillions, veuillez indiquer les raisons :</label>
+          <textarea id="conditions-stockage"readonly></textarea>
+        </div>
+
+        <div class="form-line">
+          <div class="sample-form">
+            <div class="form-field">
+              <label>Analyse réalisée le :</label>
+              <input type="text" id="date_d_analyse" name="date_d_analyse" readonly>
+            </div>
+            <div class="form-field">
+              <label>Résultats délivrés le :</label>
+            </div>
+            <div class="form-field">
+              <label>Reste des échantillions récupérée le :</label>
+            </div>
+          </div>
+
+          <div class="sample-form">
+            <div class="form-field">
+              <label>Par (Nom et Signature) :</label>
+              <input type="text" readonly>
+            </div>
+            <div class="form-field">
+              <label>Réceptionnées par (Nom et Signature) :</label>
+            </div>
+            <div class="form-field">
+              <label>Par (Nom et Signature) :</label>
+            </div>
+          </div>
+          
+        </div>
+
+
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
